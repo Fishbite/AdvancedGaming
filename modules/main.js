@@ -1,3 +1,3 @@
 /* main.js */
-import { hello } from "./module";
+import { hello } from "./module.js";
 console.log(hello);
