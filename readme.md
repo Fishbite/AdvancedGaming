@@ -1,4 +1,5 @@
-#Advanced Gaming
+# Advanced Gaming
+
 This repository has been created
 whilst reading the first chapter
 of Advanced Game Design by
