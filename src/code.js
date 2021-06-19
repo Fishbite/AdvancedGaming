@@ -238,9 +238,9 @@ class Monster {
 }
 
 /*
-  This class is know as the parent or super class.
-  You can onnw make a specific monster that
-  extends the Monnster class
+  This class is known as the parent or super class.
+  You can now make a specific monster that
+  extends the Monster class
   */
 
 // here's a Dragon class that extends the Monster class:
@@ -263,7 +263,7 @@ class Dragon extends Monster {
   The Dragon has inherited all the properties of the
   Monster class, but it also includes its own custom
   ones. It can call methods on the Monster class with
-  the keyword `super`. Nowe lets create a new Dragon
+  the keyword `super`. Now lets create a new Dragon
   object and make it speak:
 */
 

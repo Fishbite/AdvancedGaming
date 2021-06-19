@@ -5,12 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Code for gaming</title>
+    <link rel="stylesheet" href="./styles/fscreen.css" />
   </head>
   <body>
-    <h1>Open the Console!!!</h1>
-    <p>You might actually see something then :)</p>
+    <div class="stage" id="stage">
+      <img class="img" src="./images/ratio_16x9.png" alt="ratio_16x9.png" />
+    </div>
+    <!-- ****||||||| Scripts ||||||**** -->
+    <script src="./src/fullScreen.js"></script>
     <script src="./src/code.js"></script>
     <script src="./src/rooms.js"></script>
     <script src="./src/storage.js"></script>
+    <script src="./src/promises.js"></script>
+    <!-- Note: Use this screenfull -->
+    <!-- <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/screenfull.js/5.1.0/screenfull.min.js"
+      integrity="sha512-SGPHIoS+NsP1NUL5RohNpDs44JlF36tXLN6H3Cw+EUyenEc5zPXWqfw9D+xmvR00QYUYewQIJQ6P5yH82Vw6Fg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script> -->
   </body>
 </html>
