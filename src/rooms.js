@@ -21,8 +21,13 @@ xhr.onload = (event) => {
     rooms = JSON.parse(xhr.responseText);
     console.log("JSON data loaded");
 
-    // Use this data to voew the library contents:
+    // Use this data to view the library contents:
     console.log(rooms.livingRoom.contents);
+
+    // Check if the living room light is on:
+    if (rooms.livingRoom.light.on === true) {
+      console.log("The living room light is on");
+    }
 
     // check whether the closet light is on:
     if (rooms.closet.light.on === false) {
