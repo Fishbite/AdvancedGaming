@@ -27,11 +27,10 @@ ES6 modules, promises, localStorage,
 making your game full screen
 ...and more.
 
-I think we are pretty much done in here and thus, it's now just for reference for the future venture
-into game design.
-
 Next, we are going to take a crash course in drawing stuff on the
 html canvas element. Stuff we've touched on before, but I'm looking
 forward to this little adventure.
+
+Take a look in the canvas folder and....
 
 Stay tuned :-)
