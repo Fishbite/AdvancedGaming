@@ -37,9 +37,9 @@ bezierCurveTo(control1X, control1Y, control2X, control2Y, endX, endY);
 ctx.lineWidth = 1;
 //ctx.fillStyle = "yellow"; // affects other arcs & curves
 ctx.strokeStyle = "grey";
-ctx.moveTo(0, 128);
+ctx.moveTo(0, 128); // curve start point
 ctx.bezierCurveTo(16, 0, 240, 0, 256, 128);
-ctx.bezierCurveTo(240, 10, 16, 10, 0, 128);
+ctx.bezierCurveTo(240, 12, 16, 12, 0, 128);
 ctx.closePath();
 //ctx.stroke(); // you don't have to stroke to fill!
 ctx.fill(); // affects other arcs & curves
