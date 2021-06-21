@@ -45,6 +45,6 @@ ctx.fillStyle = "rgba(127, 127, 0, 0.5)";
 // draw an arc
 ctx.beginPath();
 ctx.arc(213, 170, 42.5, 0, 1 * Math.PI, true);
-//ctx.closePath();
+ctx.closePath();
 ctx.stroke();
 ctx.fill();
