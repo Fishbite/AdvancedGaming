@@ -24,5 +24,6 @@ ctx.shadowBlur = 10;
 // make a shape
 ctx.beginPath();
 ctx.arc(213.5, 106.5, 21.5, 0, 2 * Math.PI, false);
+ctx.closePath();
 //ctx.stroke();
 ctx.fill();
