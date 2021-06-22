@@ -64,3 +64,4 @@ where the two shapes overlap.
 “copy” | Draws only the second shape.
 
 **See Page 83 for images of the above**
+...
