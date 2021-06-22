@@ -1,7 +1,14 @@
-/* rotation.js */
+/* rotationAndScale.js */
+/*
+    We decide to put the scale method in
+    here too, because just like rotation
+    scale needs to be placed between
+    ctx.save(); and ctx.restore();
+*/
+
 //styles
 ctx.strokeStyle = "black";
-ctx.lineWidth = 3;
+ctx.lineWidth = 1;
 ctx.fillStyle = "rgba(255, 200, 0, 0.25)";
 
 /* !!!!!! IMOPRTANT !!!!! */
@@ -19,6 +26,8 @@ ctx.translate(128, 128);
 ctx.rotate(45 * (Math.PI / 180));
 console.log("rads:", 45 * (Math.PI / 180));
 
+// Set the drawing context's scale method
+ctx.scale(0.75, 0.75);
 // draw a square with it's center at 0, 0
 ctx.beginPath();
 ctx.rect(-64, -64, 128, 128);
