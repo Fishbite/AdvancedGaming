@@ -4,11 +4,6 @@
     to shapes.
 */
 
-// first we'll clear the canvas
-// it's a little too busy right now!
-/* ||||| Comment This Out When Needed */
-ctx.clearRect(0, 0, 256, 256);
-
 // Note: top left of image is inserted
 // at X 0, Y 0. Move the context's origin
 // to the top left of the shape you want
@@ -57,18 +52,22 @@ function loadHandler() {
   ctx.stroke();
   ctx.fill();
   ctx.restore();
+
+  // If you just want to display an image on the canvas use:
+  // drawImage(img, Xpos, Ypos)
+  ctx.drawImage(catImage, 128, 172);
 }
 
 // If you just want to display an image on the canvas use:
 // drawImage(img, Xpos, Ypos)
 
-let catImage2 = new Image();
-catImage2.addEventListener("load", loadHandler2, false);
-catImage2.src = "./images/cat.png";
+// let catImage2 = new Image();
+// catImage2.addEventListener("load", loadHandler2, false);
+// catImage2.src = "./images/cat.png";
 
-function loadHandler2() {
-  ctx.drawImage(catImage2, 128, 172);
-}
+// function loadHandler2() {
+//   ctx.drawImage(catImage2, 128, 172);
+// }
 
 /* 
   ****** Masking Images ******
