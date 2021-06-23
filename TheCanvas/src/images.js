@@ -67,5 +67,18 @@ catImage2.addEventListener("load", loadHandler2, false);
 catImage2.src = "./images/cat.png";
 
 function loadHandler2() {
-  ctx.drawImage(catImage, 128, 172);
+  ctx.drawImage(catImage2, 128, 172);
 }
+
+/* 
+  ****** Masking Images ******
+  To create a mask, draw a shape
+  and then use the clip method instead of stoke
+*/
+/*
+// A circular mask
+ctx.beginPath();
+ctx.arc(128, 128, 64, 0, Math.PI * 2, false);
+ctx.clip();
+// NB: Research this!!!
+*/
