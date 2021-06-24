@@ -37,6 +37,12 @@ ctx.fillText(
   0 // Y pos
 );
 
+// text in bottom right corner of canvas
+ctx.textBaseline = "top";
+ctx.fillText(string, 0, canvas.height - height);
+// Note: this drops the little "y" tail off the
+// bottom of the canvas. Fix it with textBaseline
+
 // text in the bottom left of canvas
 ctx.textBaseline = "hanging"; // manage little "y"
 ctx.fillText(
