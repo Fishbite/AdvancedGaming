@@ -45,6 +45,7 @@ ctx.fillText(string, 0, canvas.height - height);
 
 // text in the bottom left of canvas
 ctx.textBaseline = "hanging"; // manage little "y"
+ctx.fillStyle = "rgba(255, 100, 0, 1)";
 ctx.fillText(
   string,
   canvas.width - width, // X pos
