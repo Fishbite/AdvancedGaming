@@ -6,7 +6,8 @@ let canvas = makeCanvas();
 // an array to hold all sprites
 let children = [];
 
-// the rectangle sprite
+/* ********** The Rectangle Sprite ********** */
+
 // create and return an abstracted rectangle
 // it contains all the sprites params that we want to
 // control: size, position, colour
@@ -57,3 +58,60 @@ let rectangle = function (
   // return the object
   return o;
 };
+
+/* ********** The Global Render Function ********** */
+
+/* The job of this function is to loop through all the objects in the `children` array and use eaach sprite's own internal `render` function to draw the shape on the canvas.
+
+The function will only draw the sprite if it is visible. It will set the canvas's properties to match the sprite's. */
+function render(canvas, ctx) {
+  // clear the canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // loop through each sprite in the `children` array
+  children.forEach((sprite) => {
+    displaySprite(sprite);
+  });
+
+  function displaySprite(sprite) {
+    // display a sprite if it's visible
+    if (sprite.visible) {
+      // save tha canvas current state
+      ctx.save();
+
+      // shift the canvas to the sprite's position
+      ctx.translate(sprite.x + sprite.width / 2, sprite.y + sprite.height / 2);
+
+      // set the sprite's rotation, alpha & scale
+      ctx.rotate(sprite.rotation);
+      ctx.globalAlpha = sprite.alpha;
+      ctx.scale(sprite.scaleX, sprite.scaleY);
+
+      // use the sprite's own render method to draw the sprite
+      sprite.render(ctx);
+
+      // restore the canvas to its previous state
+      ctx.restore();
+    }
+  }
+}
+
+/* ******* And now! Let's make mome Sprites! ******* */
+
+// A reminder of the rectangle function params:
+//width, height, fillStyle, strokeStyle, lineWidth, x, y
+
+let blueBox = rectangle(64, 64, "blue", "none", 0, 32, 32);
+blueBox.rotation = 0.25;
+
+let redBox = rectangle(64, 64, "red", "black", 4, 160, 100);
+redBox.alpha = 0.75;
+redBox.rotation = 0.5;
+redBox.scaleY = 2;
+
+let greenBox = rectangle(64, 64, "green", "black", 4, 64, 160);
+
+// render the sprites
+// Note: we made canvas.ctx = canvas.getContext("2d")
+// in the `makeCanvas` module!
+render(canvas, canvas.ctx);
