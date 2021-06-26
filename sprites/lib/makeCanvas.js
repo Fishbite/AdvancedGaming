@@ -1,7 +1,7 @@
 /* makeCanvas.js */
 
 // a module to create a canvas
-export function createCanvas(
+export function makeCanvas(
   width = 256,
   height = 256,
   border = "1px solid black",
