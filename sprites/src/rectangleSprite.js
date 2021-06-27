@@ -3,6 +3,10 @@ import { makeCanvas } from "../lib/makeCanvas.js";
 
 let canvas = makeCanvas();
 
+// Note: we made canvas.ctx = canvas.getContext("2d")
+// in the `makeCanvas` module so make it simple to access
+let ctx = canvas.ctx;
+
 // an array to hold all sprites
 let children = [];
 
@@ -112,6 +116,5 @@ redBox.scaleY = 2;
 let greenBox = rectangle(64, 64, "green", "black", 4, 64, 160);
 
 // render the sprites
-// Note: we made canvas.ctx = canvas.getContext("2d")
-// in the `makeCanvas` module!
-render(canvas, canvas.ctx);
+
+render(canvas, ctx);
