@@ -134,7 +134,7 @@ let rectangle = function (
           // sort the sprite's parent's `chilrdren`
           // array so that sprites with a higher `layer`
           // value are moved to the end of the array
-          o.parent.sort((a, b) => a.layer - b.layer);
+          o.parent.children.sort((a, b) => a.layer - b.layer);
         }
       },
       enumerable: true,
@@ -231,7 +231,7 @@ function render(canvas, ctx) {
 }
 
 /* ******* And now! Let's make nested Sprites! ******* */
-
+/* *********** Playground *********** */
 // A reminder of the rectangle function params:
 //width, height, fillStyle, strokeStyle, lineWidth, x, y
 
@@ -258,6 +258,24 @@ let pinkBox = rectangle(24, 24, "pink");
 greyBox.addChild(pinkBox);
 pinkBox.x = 8;
 pinkBox.y = 8;
+
+// Note: we're just messing around here and
+// set the pinkBox rotation to counter the
+// greyBox rotation by -2, else it would stay
+// aligned with the grey box
+greyBox.rotation = 0.5;
+pinkBox.rotation = greyBox.rotation * -2;
+// like the goldBox is aligned to the blueBox
+blueBox.rotation = 0.25;
+// and transparency:
+greyBox.alpha = 0.1;
+
+let redBox = rectangle(64, 64, "Red", "black", 6, 189, 189);
+let greenBox = rectangle(64, 64, "green", "black", 6, 173, 173);
+let yellowBox = rectangle(64, 64, "yellow", "black", 6, 157, 157);
+
+// adjust a sprites layer value
+greenBox.layer = 1;
 
 // render the sprites
 render(canvas, ctx);
