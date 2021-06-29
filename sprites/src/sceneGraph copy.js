@@ -193,14 +193,8 @@ function render(canvas, ctx) {
 
   function displaySprite(sprite) {
     // console.log("displaySprite():", sprite);
-    // display a sprite if it's visible and in canvas area
-    if (
-      sprite.visible &&
-      sprite.gx < canvas.width + sprite.width &&
-      sprite.gx + sprite.width >= -sprite.width &&
-      sprite.gy < canvas.height + sprite.height &&
-      sprite.gy + sprite.height >= -sprite.height
-    ) {
+    // display a sprite if it's visible
+    if (sprite.visible) {
       // save tha canvas current state
       ctx.save();
 
@@ -212,43 +206,12 @@ function render(canvas, ctx) {
       ctx.globalAlpha = sprite.alpha;
       ctx.scale(sprite.scaleX, sprite.scaleY);
 
-      // display the optional drop shadow of the sprite
-      if (sprite.shadow) {
-        ctx.shadowColor = sprite.shadowColor;
-        ctx.shadowOffsetX = sprite.shadowOffsetX;
-        ctx.shadowOffsetY = sprite.shadowOffsetY;
-        ctx.shadowBlur = sprite.shadowBlur;
-      }
-
-      // display the opstional blend mode
-      if (sprite.blendMode) {
-        ctx.globalCompositeOperation = sprite.blendMode;
-      }
-
       // use the sprite's own render method to draw the sprite
-      if (sprite.render) sprite.render(ctx);
+      sprite.render(ctx);
 
-      if (sprite.children && sprite.children.length > 0) {
-        // reset the context back to the parent's top left
-        // corner, relative to the pivot point
-        ctx.translate(
-          -sprite.width * sprite.pivotX,
-          -sprite.height * sprite.pivotY
-        );
-
-        // loop through the parent sprite's children
-        sprite.children.forEach((child) => {
-          // display the child
-
-          displaySprite(child);
-        });
-      }
-
-      /* ********* We might need to remove this! **********/
       // If the sprite contains child sprites in its
       // `children` array, display them by recursively calling this
       // very same `displaySprite` function again
-      /*
       if (sprite.children && sprite.children.length > 0) {
         // reset the context back to the parent sprite's
         // top left corner
@@ -260,7 +223,6 @@ function render(canvas, ctx) {
           displaySprite(child);
         });
       }
-      */
 
       // restore the canvas to its previous state
       ctx.restore();
