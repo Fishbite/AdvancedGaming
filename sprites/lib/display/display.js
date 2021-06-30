@@ -9,7 +9,7 @@ class DisplayObject {
 
     // set rotation, alpha, visible, scale properties
     this.rotation = 0;
-    this, (alpha = 1);
+    this.alpha = 1;
     this.visible = true;
     this.scaleX = 1;
     this.scaleY = 1;
