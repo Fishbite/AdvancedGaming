@@ -220,7 +220,7 @@ function render(canvas, ctx) {
         ctx.shadowBlur = sprite.shadowBlur;
       }
 
-      // display the opstional blend mode
+      // display the optional blend mode
       if (sprite.blendMode) {
         ctx.globalCompositeOperation = sprite.blendMode;
       }

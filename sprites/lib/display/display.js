@@ -117,15 +117,12 @@ class DisplayObject {
   get halfWidth() {
     return this.width / 2;
   }
-
   get halfHeight() {
     return this.height / 2;
   }
-
   get centerX() {
     return this.x + this.halfWidth;
   }
-
   get centerY() {
     return this.y + this.halfHeight;
   }
@@ -274,11 +271,15 @@ class DisplayObject {
   set circular(value) {
     // give the sprite `radius` and `diameter` properties
     // if circular is `true`
-    if ((value === true) & (this._circular === false)) {
+    if (value === true && this._circular === false) {
       Object.defineProperties(this, {
         diameter: {
           get() {
             return this.width;
+          },
+          set(value) {
+            this.width = value;
+            this.height = value;
           },
           enumerable: true,
           configurable: true,
@@ -357,6 +358,140 @@ class DisplayObject {
     }
   }
 }
+
+export let stage = new DisplayObject();
+
+function render(canvas) {
+  //Get a reference to the context
+  let ctx = canvas.ctx;
+  //Clear the canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //Loop through each sprite object in the stage's `children` array
+  stage.children.forEach((sprite) => {
+    //Display a sprite
+    displaySprite(sprite);
+  });
+  function displaySprite(sprite) {
+    //Only display the sprite if it's visible
+    //and within the area of the canvas
+    if (
+      sprite.visible &&
+      sprite.gx < canvas.width + sprite.width &&
+      sprite.gx + sprite.width >= -sprite.width &&
+      sprite.gy < canvas.height + sprite.height &&
+      sprite.gy + sprite.height >= -sprite.height
+    ) {
+      //Save the canvas's present state
+      ctx.save();
+
+      //Shift the canvas to the center of the sprite's position
+      ctx.translate(
+        sprite.x + sprite.width * sprite.pivotX,
+        sprite.y + sprite.height * sprite.pivotY
+      );
+      //Set the sprite's `rotation`, `alpha` and `scale`
+      ctx.rotate(sprite.rotation);
+      ctx.globalAlpha = sprite.alpha * sprite.parent.alpha;
+      ctx.scale(sprite.scaleX, sprite.scaleY);
+      //Display the sprite's optional drop shadow
+      if (sprite.shadow) {
+        ctx.shadowColor = sprite.shadowColor;
+        ctx.shadowOffsetX = sprite.shadowOffsetX;
+        ctx.shadowOffsetY = sprite.shadowOffsetY;
+        ctx.shadowBlur = sprite.shadowBlur;
+      }
+      //Display the optional blend mode
+      if (sprite.blendMode) ctx.globalCompositeOperation = sprite.blendMode;
+      //Use the sprite's own `render` method to draw the sprite
+      if (sprite.render) sprite.render(ctx);
+      if (sprite.children && sprite.children.length > 0) {
+        //Reset the context back to the parent sprite's top-left corner,
+        //relative to the pivot point
+        ctx.translate(
+          -sprite.width * sprite.pivotX,
+          -sprite.height * sprite.pivotY
+        );
+        //Loop through the parent sprite's children
+        sprite.children.forEach((child) => {
+          //display the child
+          displaySprite(child);
+        });
+      }
+      //Restore the canvas to its previous state
+      ctx.restore();
+    }
+  }
+}
+
+// ****** the stage: root parent container for all sprites
+/* un-comment this when ready
+let stage = new DisplayObject();
+
+stage.width = canvas.width;
+stage.height = canvas.height;
+************ */
+class Rectangle extends DisplayObject {
+  constructor(
+    width = 32,
+    height = 32,
+    fillStyle = "gray",
+    strokeStyle = "none",
+    lineWidth = 0,
+    x = 0,
+    y = 0
+  ) {
+    //Call the DisplayObject's constructor
+    super();
+    //Assign the argument values to this sprite
+    Object.assign(this, {
+      width,
+      height,
+      fillStyle,
+      strokeStyle,
+      lineWidth,
+      x,
+      y,
+    });
+    //Add a `mask` property to enable optional masking
+    this.mask = false;
+  }
+  //The `render` method explains how to draw the sprite
+  render(ctx) {
+    ctx.strokeStyle = this.strokeStyle;
+    ctx.lineWidth = this.lineWidth;
+    ctx.fillStyle = this.fillStyle;
+    ctx.beginPath();
+    ctx.rect(
+      //Draw the sprite around its `pivotX` and `pivotY` point
+      -this.width * this.pivotX,
+      -this.height * this.pivotY,
+      this.width,
+      this.height
+    );
+    if (this.strokeStyle !== "none") ctx.stroke();
+    if (this.fillStyle !== "none") ctx.fill();
+    if (this.mask && this.mask === true) ctx.clip();
+  }
+}
+//A higher-level wrapper for the rectangle sprite
+function rectangle(width, height, fillStyle, strokeStyle, lineWidth, x, y) {
+  //Create the sprite
+  let sprite = new Rectangle(
+    width,
+    height,
+    fillStyle,
+    strokeStyle,
+    lineWidth,
+    x,
+    y
+  );
+  //Add the sprite to the stage
+  stage.addChild(sprite);
+  //Return the sprite to the main program
+  return sprite;
+}
+
+let box = rectangle(96, 96, "blue", "none", 0, 54, 64);
 
 // A Universal function to remove any sprite, or
 // list of sprites, from any parent
