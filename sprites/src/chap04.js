@@ -10,8 +10,7 @@ assets
   .then(() => setUp());
 
 function setUp() {
-  let canvas = makeCanvas();
-
+  let canvas = makeCanvas(312, 312);
   let ctx = canvas.ctx;
 
   let children = [];
@@ -176,6 +175,7 @@ function setUp() {
     // loop through each sprite object in the stage's
     // children array
     stage.children.forEach((sprite) => {
+      console.log("sprite: ", sprite);
       displaySprite(sprite);
     });
 
@@ -192,6 +192,8 @@ function setUp() {
 
         //set sprite's options:
         ctx.rotate(sprite.rotation);
+        // set the sprite's alpha transparency to be
+        // relative to its parent's alpha
         ctx.globalAlpha = sprite.alpha * sprite.parent.alpha;
         ctx.scale(sprite.scaleX, sprite.scaleY);
 
@@ -200,6 +202,8 @@ function setUp() {
 
         // display the children of the sprite by recursively
         // calling the `displaySprite` function
+        // this statement is key to making the the whole
+        // scene graph work
         if (sprite.childen && sprite.childen.length > 0) {
           // reset the context back to the parent
           // sprite's top left corner
@@ -221,25 +225,53 @@ function setUp() {
 
   /* { width, height, fillStyle, strokeStyle, lineWidth, Xpos, Ypos } */
 
-  let blueBox = rectangle(64, 64, "blue");
+  // all components are in place. This is how to use them
 
-  let redBox = rectangle(32, 32, "red", "yellow", 4, 16, 16);
-  redBox.rotation = 0.75;
-  redBox.alpha = 0.9;
-  redBox.scaleX = 1.25;
-  redBox.scaleY = 1.25;
+  // make the canvas
+
+  // make the first parent sprite:
+  let blueBox = rectangle(96, 96, "blue", "none", 0, 64, 54);
+
+  // amke the gold box and add it is a child of the blue box
+  let goldBox = rectangle(64, 64, "gold");
+  blueBox.addChild(goldBox);
+
+  // assign the gold box's local coords relative to blueBox
+  goldBox.x = 24;
+  goldBox.y = 24;
+
+  // aad a grey box to the gold box
+  let greyBox = rectangle(48, 48, "grey");
+  goldBox.addChild(greyBox);
+  greyBox.x = 8;
+  greyBox.y = 8;
+
+  // add a pink box to the grey box
+  let pinkBox = rectangle(24, 24, "pink");
+  greyBox.addChild(pinkBox);
+  pinkBox.x = 8;
+  pinkBox.y = 8;
+
+  // render the canvas
+  render(canvas);
+
+  // let blueBox = rectangle(64, 64, "blue");
+
+  // let redBox = rectangle(32, 32, "red", "yellow", 4, 16, 16);
+  // redBox.rotation = 0.75;
+  // redBox.alpha = 0.9;
+  // redBox.scaleX = 1.25;
+  // redBox.scaleY = 1.25;
 
   //let catImage = new Image();
   //catImage.src = assets["cat.png"];
   //Load an image
 
-  let catImage = new Image();
-  catImage.addEventListener("load", loadHandler, false);
-  catImage.src = "images/cat.png";
-  //The loadHandler is called when the image has loaded
-  function loadHandler() {
-    ctx.drawImage(catImage, 64, 64);
-  }
-
-  render(canvas, ctx);
+  // let catImage = new Image();
+  // catImage.addEventListener("load", loadHandler, false);
+  // catImage.src = "images/cat.png";
+  // //The loadHandler is called when the image has loaded
+  // function loadHandler() {
+  //   ctx.drawImage(catImage, 64, 64);
+  // }
 }
