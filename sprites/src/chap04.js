@@ -29,6 +29,13 @@ function setUp() {
     // Object to be returned by this function
     let o = { width, height, fillStyle, strokeStyle, lineWidth, x, y };
 
+    // a private `_layer` property
+    o._layer = 0;
+
+    // sprite's dim's
+    o.width = width;
+    o.height = height;
+
     // optional properties go here
     o.rotation = 0;
     o.alpha = 1;
@@ -39,6 +46,36 @@ function setUp() {
     // velocity vars to help mmove the sprite
     o.vx = 0;
     o.vy = 0;
+
+    // an array to store all the sprite's children
+    o.children = [];
+
+    // the sprite's `parent` prop
+    o.parent = undefined;
+
+    // `addChild` let's us add sprites to this container
+    o.addChild = (sprite) => {
+      // remove the sprite from its current parent if it has one
+      // and the parent isn't already this object
+      if (sprite.parent) {
+        sprite.parent.removeChild(sprite);
+      }
+
+      // make this object the sprite's parent and
+      // add it to this object's children array
+      sprite.parent = o;
+      o.children.push(sprite);
+    };
+
+    // `removeChild` method to remove sprite from
+    // its parent conatiner
+    o.removeChild = (sprite) => {
+      if ((sprite.parent = o)) {
+        o.children.splice(o.children.indexOf(sprite), 1);
+      } else {
+        throw new Error(sprite + "is not a child of" + o);
+      }
+    };
 
     // The sprite's render method
     o.render = (ctx) => {
@@ -51,24 +88,94 @@ function setUp() {
       ctx.fill();
     };
 
-    // push the sprite into the children array
-    children.push(o);
+    // getters and setters for the sprite's internal prop's
+    Object.defineProperties(o, {
+      // the sprite's global x and y pos'
+      gx: {
+        get() {
+          if (o.parent) {
+            // the sprite's global x pos is a combination of
+            // its local x value and its parent's global x pos'
+            return o.x + o.parent.gx;
+          } else {
+            return o.x;
+          }
+        },
+        enumerable: true,
+        configurable: true,
+      },
+
+      gy: {
+        get() {
+          if (o.parent) {
+            return o.y + o.parent.gy;
+          } else {
+            return o.y;
+          }
+        },
+        enumerable: true,
+        configurable: true,
+      },
+
+      // the sprite's depth layer (default = 0) set layer to a
+      // higher number to force it to be above another sprite
+      layer: {
+        get() {
+          return o._layer;
+        },
+        set(value) {
+          o._layer = value;
+          if (o.parent) {
+            // sort the sprite's parent's children array so that
+            // sprties with a higher layer value are move to
+            // the end of the array
+            o.parent.shildren.sort((a, b) => a.layer - b.layer);
+          }
+        },
+        enumerable: true,
+        configurable: true,
+      },
+    });
+
+    // add the object as a child of the stage
+    if (stage) stage.addChild(o);
 
     // return the object
     return o;
   };
+
   console.log("children array: ", children);
   /* ****** End rectangle sprite ****** */
 
+  // The Stage. The root parent for all sprites
+  let stage = {
+    x: 0,
+    y: 0,
+    gx: 0,
+    gy: 0,
+    alpha: 1,
+    width: canvas.width,
+    height: canvas.height,
+    parent: undefined,
+
+    // give the stage `addChild` and `removeChild` methods
+    children: [],
+
+    addChild(sprite) {
+      this.children.splice(this.children.indexOf(sprite), 1);
+    },
+  };
+
   /* ****** Start global Render function ****** */
 
-  function render(canvas, ctx) {
+  function render(canvas) {
+    let ctx = canvas.ctx;
     //clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // loop through each sprite in the children array
-    // and call displaySrite()
-    children.forEach((sprite) => {
+    // loop through each sprite object in the stage's
+    // children array
+    stage.children.forEach((sprite) => {
       displaySprite(sprite);
     });
 
@@ -77,7 +184,7 @@ function setUp() {
         // save the canvas' state
         ctx.save();
 
-        // shift the canvas to the sprtie's pos'
+        // shift the canvas to the sprite's pos'
         ctx.translate(
           sprite.x + sprite.width / 2,
           sprite.y + sprite.height / 2
@@ -85,11 +192,25 @@ function setUp() {
 
         //set sprite's options:
         ctx.rotate(sprite.rotation);
-        ctx.globalAlpha = sprite.alpha;
+        ctx.globalAlpha = sprite.alpha * sprite.parent.alpha;
         ctx.scale(sprite.scaleX, sprite.scaleY);
 
         // call the sprite's own render mothod
         sprite.render(ctx);
+
+        // display the children of the sprite by recursively
+        // calling the `displaySprite` function
+        if (sprite.childen && sprite.childen.length > 0) {
+          // reset the context back to the parent
+          // sprite's top left corner
+          ctx.translate(-sprite.width / 2, -sprite.height / 2);
+
+          // loop through the parent sprite's children
+          sprite.forEach((child) => {
+            // display the child
+            displaySprite(child);
+          });
+        }
 
         // restore the canvas state
         ctx.restore();
@@ -98,7 +219,7 @@ function setUp() {
   }
   /* ****** End global Render function ****** */
 
-  /* { width, height, fillStyle, strokeStyle, lineWidth, x, y } */
+  /* { width, height, fillStyle, strokeStyle, lineWidth, Xpos, Ypos } */
 
   let blueBox = rectangle(64, 64, "blue");
 
