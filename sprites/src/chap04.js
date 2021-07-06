@@ -13,7 +13,7 @@ import { makeCanvas } from "../lib/makeCanvas.js";
 let canvas = makeCanvas(312, 312);
 // let ctx = canvas.ctx;
 
-let children = [];
+// let children = [];
 
 /* ****** Start rectangle sprite ****** */
 let rectangle = function (
@@ -69,7 +69,7 @@ let rectangle = function (
   // `removeChild` method to remove sprite from
   // its parent conatiner
   o.removeChild = (sprite) => {
-    if ((sprite.parent = o)) {
+    if (sprite.parent === o) {
       o.children.splice(o.children.indexOf(sprite), 1);
     } else {
       throw new Error(sprite + "is not a child of" + o);
@@ -93,10 +93,12 @@ let rectangle = function (
     gx: {
       get() {
         if (o.parent) {
+          console.log(o.parent);
           // the sprite's global x pos is a combination of
           // its local x value and its parent's global x pos'
           return o.x + o.parent.gx;
         } else {
+          console.log(o.x);
           return o.x;
         }
       },
@@ -128,7 +130,7 @@ let rectangle = function (
           // sort the sprite's parent's children array so that
           // sprties with a higher layer value are move to
           // the end of the array
-          o.parent.shildren.sort((a, b) => a.layer - b.layer);
+          o.parent.children.sort((a, b) => a.layer - b.layer);
         }
       },
       enumerable: true,
@@ -143,7 +145,6 @@ let rectangle = function (
   return o;
 };
 
-console.log("children array: ", children);
 /* ****** End rectangle sprite ****** */
 
 // The Stage. The root parent for all sprites
@@ -161,6 +162,10 @@ let stage = {
   children: [],
 
   addChild(sprite) {
+    this.children.push(sprite);
+    sprite.parent = this;
+  },
+  removeChild(sprite) {
     this.children.splice(this.children.indexOf(sprite), 1);
   },
 };
@@ -175,8 +180,8 @@ function render(canvas) {
   // loop through each sprite object in the stage's
   // children array
   stage.children.forEach((sprite) => {
-    console.log("sprite: ", sprite);
     displaySprite(sprite);
+    console.log("sprite: ", sprite);
   });
 
   function displaySprite(sprite) {
@@ -201,13 +206,13 @@ function render(canvas) {
       // calling the `displaySprite` function
       // this statement is key to making the the whole
       // scene graph work
-      if (sprite.childen && sprite.childen.length > 0) {
+      if (sprite.children && sprite.children.length > 0) {
         // reset the context back to the parent
         // sprite's top left corner
         ctx.translate(-sprite.width / 2, -sprite.height / 2);
 
         // loop through the parent sprite's children
-        sprite.forEach((child) => {
+        sprite.children.forEach((child) => {
           // display the child
           displaySprite(child);
         });
@@ -229,6 +234,30 @@ function render(canvas) {
 // make the first parent sprite:
 let blueBox = rectangle(96, 96, "blue", "none", 0, 64, 54);
 
+let goldBox = rectangle(64, 64, "gold");
+blueBox.addChild(goldBox);
+goldBox.x = 24;
+goldBox.y = 24;
+// display goldBox's golbal coords
+console.log(goldBox.gx, goldBox.gy);
+
+let greyBox = rectangle(48, 48, "grey");
+goldBox.addChild(greyBox);
+greyBox.x = 8;
+greyBox.y = 8;
+
+let pinkBox = rectangle(24, 24, "pink");
+greyBox.addChild(pinkBox);
+pinkBox.x = 8;
+pinkBox.y = 8;
+
+// rotate the sprites
+blueBox.rotation = 0.8;
+greyBox.rotation = 0.25;
+
+render(canvas);
+
+/*
 // amke the gold box and add it is a child of the blue box
 let goldBox = rectangle(64, 64, "gold");
 blueBox.addChild(goldBox);
@@ -251,7 +280,7 @@ pinkBox.y = 8;
 
 // render the canvas
 render(canvas);
-
+*/
 // let blueBox = rectangle(64, 64, "blue");
 
 // let redBox = rectangle(32, 32, "red", "yellow", 4, 16, 16);

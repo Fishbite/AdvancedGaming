@@ -148,6 +148,7 @@ function render(canvas) {
   //Loop through each sprite object in the stage's `children` array
   stage.children.forEach((sprite) => {
     displaySprite(sprite);
+    console.log("sprite: ", sprite);
   });
   function displaySprite(sprite) {
     //Display a sprite if it's visible
