@@ -255,6 +255,22 @@ pinkBox.y = 8;
 blueBox.rotation = 0.8;
 greyBox.rotation = 0.25;
 
+// set the transparency
+blueBox.alpha = 0.5;
+greyBox.alpha = 0.5;
+
+// stacking sprites
+// sprites are rendered in the order they are created
+let redBox = rectangle(64, 64, "red", "black", 4, 220, 180);
+let greenBox = rectangle(64, 64, "green", "black", 4, 200, 200);
+let purpleBox = rectangle(64, 64, "purple", "black", 4, 180, 220);
+// change the layer property
+redBox.layer = 1;
+// this works because `render` method loops through the
+// children array and sprites with a higher layer value
+// are moved to the end of the array, so they appear on
+// top of any sprites with a lower layer value
+
 render(canvas);
 
 /*

@@ -30,7 +30,7 @@ function setUp() {
   // try another way of using preloaded image
   // also fails with the same Type error
   let tiger = new Image();
-  tiger.src = assets["tiger"];
+  tiger.src = assets["images/tiger.png"];
   console.log(tiger);
   let pattern = ctx.createPattern(tiger, "no-repeat");
   ctx.fillStyle = pattern;
