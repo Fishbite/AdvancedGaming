@@ -271,49 +271,6 @@ redBox.layer = 1;
 // are moved to the end of the array, so they appear on
 // top of any sprites with a lower layer value
 
+/* ****** Using the asset loader ****** */
+
 render(canvas);
-
-/*
-// amke the gold box and add it is a child of the blue box
-let goldBox = rectangle(64, 64, "gold");
-blueBox.addChild(goldBox);
-
-// assign the gold box's local coords relative to blueBox
-goldBox.x = 24;
-goldBox.y = 24;
-
-// aad a grey box to the gold box
-let greyBox = rectangle(48, 48, "grey");
-goldBox.addChild(greyBox);
-greyBox.x = 8;
-greyBox.y = 8;
-
-// add a pink box to the grey box
-let pinkBox = rectangle(24, 24, "pink");
-greyBox.addChild(pinkBox);
-pinkBox.x = 8;
-pinkBox.y = 8;
-
-// render the canvas
-render(canvas);
-*/
-// let blueBox = rectangle(64, 64, "blue");
-
-// let redBox = rectangle(32, 32, "red", "yellow", 4, 16, 16);
-// redBox.rotation = 0.75;
-// redBox.alpha = 0.9;
-// redBox.scaleX = 1.25;
-// redBox.scaleY = 1.25;
-
-//let catImage = new Image();
-//catImage.src = assets["cat.png"];
-//Load an image
-
-// let catImage = new Image();
-// catImage.addEventListener("load", loadHandler, false);
-// catImage.src = "images/cat.png";
-// //The loadHandler is called when the image has loaded
-// function loadHandler() {
-//   ctx.drawImage(catImage, 64, 64);
-// }
-// }
