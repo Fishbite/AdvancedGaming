@@ -115,6 +115,13 @@ class Sprite extends DisplayObject {
 
   // the render method
   render(ctx) {
+    console.log(
+      this.source,
+      this.sourceX,
+      this.sourceY,
+      this.sourceWidth,
+      this.sourceHeight
+    );
     ctx.drawImage(
       this.source,
       this.sourceX,
@@ -191,10 +198,22 @@ function setUp() {
   let tiger = new Sprite(assets["../images/tiger.png"], 0, 0);
   stage.addChild(tiger);
 
+  let ctx = canvas.ctx;
+  let test = new Image();
+  test.addEventListener("load", loadHandler, false);
+  test.src = "../images/tiger.png";
+  stage.addChild(test);
+  console.log(stage);
+
+  function loadHandler() {
+    ctx.drawImage(test, 64, 64);
+  }
+
   // make a sprite from a texture atlas frame
   // note: hedgehog.png is the texture atlas frame ID not an image
   let hedgehog = new Sprite(assets["hedgehog.png"], 92, 128);
   stage.addChild(hedgehog);
+
   let cat = new Sprite(assets["cat.png"], 312 - 128, 0);
   stage.addChild(cat);
 
