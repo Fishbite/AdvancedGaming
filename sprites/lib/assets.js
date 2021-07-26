@@ -117,6 +117,7 @@ export let assets = {
     // `assets` object so we can access it like:
     // `assets[./images/image.png]`
     this[source] = image;
+    console.log("image =", image);
 
     //Set the image's `src` prop' to start loading
     //the image
@@ -173,6 +174,8 @@ export let assets = {
 
         // get the filename
         file.name = source;
+        console.log("file.name:", source);
+        console.log(file);
 
         // texture atlas support
         // if the JSON file has a `frames` property then
@@ -193,11 +196,13 @@ export let assets = {
   createTilesetFrames(file, source, loadHandler) {
     // get the tileset image's file path
     let baseUrl = source.replace(/[^\/]*$/, "");
+    console.log("baseUrl", baseUrl);
 
     // use the `baseUrl` and the `image` name property
     // from the JSON file's `meta` object to construct
     // the full image source path
     let imageSource = baseUrl + file.meta.image;
+    console.log("imageSource:", imageSource);
 
     // the image's load handler
     let imageLoadHandler = () => {
@@ -208,6 +213,7 @@ export let assets = {
 
       // loop through all the frames
       Object.keys(file.frames).forEach((frame) => {
+        console.log("frame:", frame);
         // the `frame` object contains all the size
         // and position data for each sub-image.
         // Add the frame data to the asset object

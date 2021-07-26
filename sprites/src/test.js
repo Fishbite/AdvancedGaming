@@ -17,21 +17,24 @@ function setup() {
   let canvas = makeCanvas(312, 312);
   let ctx = canvas.ctx;
 
-  let cat = new Image();
-  let source = assets["../images/cat.png"];
-  console.log(source);
-  // <img src="../images/cat.png">
-  cat.src = source.src;
+  // let cat = new Image();
+  // let source = assets["../images/cat.png"];
+  // console.log(source);
+  // // <img src="../images/cat.png">
+  // cat.src = source.src;
 
-  ctx.drawImage(cat, 100, 100);
+  // ctx.drawImage(cat, 100, 100);
+  // ctx.drawImage(cat, 184, 100);
 
-  // cat.addEventListener("load", loadHandler, false);
+  let tiger = new Image();
+  tiger.src = "../images/tiger.png";
+  tiger.addEventListener("load", loadHandler, false);
 
-  // function loadHandler() {
-  //   function draw(img, x, y) {
-  //     ctx.drawImage(img, x, y);
-  //   }
+  function loadHandler() {
+    function draw(img, x, y) {
+      ctx.drawImage(img, x, y);
+    }
 
-  //   draw(cat, 100, 0);
-  // }
+    draw(tiger, 100, 0);
+  }
 }
