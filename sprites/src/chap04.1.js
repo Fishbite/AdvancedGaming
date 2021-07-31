@@ -61,7 +61,7 @@ class DisplayObject {
     this.blendMode = undefined;
 
     //Properties for advanced features:
-    /*
+
     //Image states and animation
     this.frames = [];
     this.loop = true;
@@ -82,7 +82,6 @@ class DisplayObject {
     //The sprite's previous x and y positions
     this.previousX = 0;
     this.previousY = 0;
-    */
   }
 
   /* Essentials */
@@ -105,7 +104,6 @@ class DisplayObject {
     }
   }
 
-  /*
   //Depth layer
   get layer() {
     return this._layer;
@@ -118,7 +116,7 @@ class DisplayObject {
       this.parent.children.sort((a, b) => a.layer - b.layer);
     }
   }
-*/
+
   //The `addChild` method lets you add sprites to this container
   addChild(sprite) {
     //Remove the sprite from its current parent, if it has one, and
@@ -143,7 +141,7 @@ class DisplayObject {
   }
 
   //Getters that return useful points on the sprite
-  /*
+
   get halfWidth() {
     return this.width / 2;
   }
@@ -156,10 +154,9 @@ class DisplayObject {
   get centerY() {
     return this.y + this.halfHeight;
   }
-*/
 
   /* Conveniences */
-  /*
+
   //A `position` getter. It returns an object with x and y properties
   get position() {
     return { x: this.x, y: this.y };
@@ -203,7 +200,6 @@ class DisplayObject {
       return false;
     }
   }
-*/
 
   //The "put" methods help you position
   //another sprite in and around this sprite. You can position
@@ -214,7 +210,6 @@ class DisplayObject {
   //In all these methods, `b` is the second sprite that is being
   //positioned relative to the first sprite (this one), `a`
 
-  /*
   //Center `b` inside `a`
   putCenter(b, xOffset = 0, yOffset = 0) {
     let a = this;
@@ -271,10 +266,9 @@ class DisplayObject {
   remove(...spritesToRemove) {
     spritesToRemove.forEach((sprite) => this.removeChild(sprite));
   }
-  */
 
   /* Advanced features */
-  /*
+
   //If the sprite has more than one frame, return the
   //value of `_currentFrame`
   get currentFrame() {
@@ -378,7 +372,6 @@ class DisplayObject {
       this._interactive = false;
     }
   }
-  */
 }
 
 // A specific sprite type that extends DisplayObject
