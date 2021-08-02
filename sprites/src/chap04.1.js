@@ -625,6 +625,84 @@ function text(content, font, fillStyle, x, y) {
   return sprite;
 }
 
+// The Group class. This does not display any of its own
+// graphics, but is used to group sprites together. It can
+// be used for complex game characters, game scenes or levels
+// A groups height & width is calculated dynamically based on
+// the content that it contains.
+class Group extends DisplayObject {
+  constructor(...spritesToGroup) {
+    // call the DisplayObject's constructor
+    super();
+
+    // group all the sprites listed in the constructor args
+    spritesToGroup.forEach((sprite) => this.addChild(sprite));
+  }
+
+  // Groups have custom `addChild` & `removeChild` methods that
+  // call a `calculateSize` method when sprites are added
+  // or removed from the group
+  addChild(sprite) {
+    if (sprite.parent) {
+      sprite.parent.removeChild(sprite);
+    }
+    sprite.parent = this;
+    this.children.push(sprite);
+
+    // figure out the new  size of the group
+    this.calculateSize();
+  }
+
+  removeChild(sprite) {
+    if (sprite.parent === this) {
+      this.children.splice(this.children.indexOf(sprite), 1);
+
+      // figure out the new size of the group
+      this.calculateSize();
+    } else {
+      throw new Error(`${sprite} is not a child of ${this}`);
+    }
+  }
+
+  calculateSize() {
+    // calculate the width based on the size of the largest child
+    // that this sprite contains
+    if (this.children.length > 0) {
+      // temp private vars to help track the new
+      // calculated height and width
+      this._newWidth = 0;
+      this._newHeight = 0;
+
+      // find the width and height of the child sprites furthest
+      // from the top left corner of the group
+      this.children.forEach((child) => {
+        // find the child sprites that combined x value and width
+        // that's greater than the current `_newWidth` value
+        if (child.x + child.width > this._newWidth) {
+          // The new width is a combination of the child's
+          // x position and its width
+          this._newWidth = child.x + child.width;
+        }
+        if (child.y + child.height > this._newHeight) {
+          this._newHeight = child.y + child.height;
+        }
+      });
+
+      // Apply `_newWidth` & `_newHeight` to the sprite's
+      // width and height
+      this.width = this._newWidth;
+      this.height = this._newHeight;
+    }
+  }
+}
+
+// A higher level wrapper for the Group sprite
+function group(...spritesToGroup) {
+  let sprite = new Group(...spritesToGroup);
+  stage.addChild(sprite);
+  return sprite;
+}
+
 /* ******Full Featured Render Function ****** */
 function render(canvas) {
   //Get a reference to the context
@@ -781,8 +859,20 @@ function setup() {
 
   // use the text function:
   let message = text("Hey Dude!", "24px Futura", "black", 156, 230);
-
   message.content = "Grumble bugs!";
+
+  // To create a group, list the sprites in the group's constructor
+  let lines = group(blackLine, greenLine, redLine, blueLine);
+  console.log("Gouped lines:", lines);
+  lines.shadow = true;
+
+  // Alternatively, create an empty group and use `addChild` or `add`
+  // to group sprites together:
+  // let lines2 = group();
+  // lines2.addChild(blackLine);
+  // lines2.add(greenLine, redLine, blueLine);
+  // console.log("Grouped lines2:", lines2);
+  // lines2.rotation = -0.5;
 
   console.log("cat:", cat);
   render(canvas);
