@@ -982,9 +982,11 @@ function sprite(source, x, y) {
 // box.pivotY = 0.5;
 // box.rotation = 0.0;
 
-// make sprites from simgle images
+// load the assets needed
 import { assets } from "../lib/assets.js";
-assets.load(["../images/cat.png", "../images/tiger.png"]).then(() => setup());
+assets
+  .load(["../images/cat.png", "../images/tiger.png", "../images/animals.json"])
+  .then(() => setup());
 
 function setup() {
   let box = rectangle(128, 128, "blue", "none", 0, 156, 156);
@@ -1001,6 +1003,9 @@ function setup() {
 
   let tiger = new Sprite(assets["../images/tiger.png"], 0, 0);
   stage.addChild(tiger);
+
+  // Making sprites from texture atlas frames
+  let tiger2 = sprite(assets["tiger.png"], 184, 0);
 
   // use the circle function
   // (diameter, fillStyle, strokeStlye, lineWidth, Xpos, Ypos)
