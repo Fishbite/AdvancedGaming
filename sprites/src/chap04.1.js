@@ -374,6 +374,15 @@ class DisplayObject {
   }
 }
 
+// A universal function to remove any sprite or list of
+// sprites from any parent
+
+function remove(...spritesToRemove) {
+  spritesToRemove.forEach((sprite) => {
+    sprite.parent.removeChild(sprite);
+  });
+}
+
 // A specific sprite type that extends DisplayObject
 // and implements its own unique methods and props
 class SpriteType extends DisplayObject {
@@ -390,6 +399,7 @@ let stage = new DisplayObject();
 stage.width = canvas.width;
 stage.height = canvas.height;
 
+// The `Rectangle` class
 class Rectangle extends DisplayObject {
   constructor(
     width = 32,
@@ -461,6 +471,157 @@ export function rectangle(
   stage.addChild(sprite);
 
   //Return the sprite to the main program
+  return sprite;
+}
+
+// The `Circle` class
+class Circle extends DisplayObject {
+  constructor(
+    diameter = 32,
+    fillStyle = "gray",
+    strokeStyle = "none",
+    lineWidth = 0,
+    x = 0,
+    y = 0
+  ) {
+    // Call the DisplaObject's constructor
+    super();
+
+    // enable radius and diameter props
+    this.circular = true;
+
+    // assign the arguent values to this sprite
+    Object.assign(this, {
+      diameter,
+      fillStyle,
+      strokeStyle,
+      lineWidth,
+      x,
+      y,
+    });
+
+    // add a mask prop to enable optional masking
+    this.mask = false;
+  }
+
+  // The render method
+  render(ctx) {
+    ctx.strokeStyle = this.strokeStyle;
+    ctx.lineWidth = this.lineWidth;
+    ctx.fillStyle = this.fillStyle;
+    ctx.beginPath();
+    ctx.arc(
+      this.radius + -this.diameter * this.pivotX,
+      this.radius + -this.diameter * this.pivotY,
+      this.radius,
+      0,
+      2 * Math.PI,
+      false
+    );
+
+    if (this.strokeStyle !== "none") ctx.stroke();
+    if (this.fillStyle !== "none") ctx.fill();
+    if (this.mask && this.mask === true) ctx.clip();
+  }
+}
+
+// A higher level wrapper for the circle sprite
+export function circle(diameter, fillStyle, strokeStyle, lineWidth, x, y) {
+  let sprite = new Circle(diameter, fillStyle, strokeStyle, lineWidth, x, y);
+  stage.addChild(sprite);
+  return sprite;
+}
+
+// The Line class
+class Line extends DisplayObject {
+  constructor(
+    strokeStyle = "none",
+    lineWidth = 0,
+    ax = 0,
+    ay = 0,
+    bx = 32,
+    by = 32
+  ) {
+    // call the DisplayObject's constructor:
+    super();
+
+    // Assign the argument values to this sprite
+    Object.assign(this, {
+      strokeStyle,
+      lineWidth,
+      ax,
+      ay,
+      bx,
+      by,
+    });
+
+    // The `lineJoin` style: round, mitre or bevel
+    this.lineJoin = "round";
+  }
+
+  // The render method
+  render(ctx) {
+    ctx.strokeStyle = this.strokeStyle;
+    ctx.lineWidth = this.lineWidth;
+    ctx.lineJoin = this.lineJoin;
+    ctx.beginPath();
+    ctx.moveTo(this.ax, this.ay);
+    ctx.lineTo(this.bx, this.by);
+    if (this.strokeStyle !== "none") ctx.stroke();
+  }
+}
+
+// A higher level wrapper for the line sprite
+function line(strokeStyle, lineWidth, ax, ay, bx, by) {
+  let sprite = new Line(strokeStyle, lineWidth, ax, ay, bx, by);
+  stage.addChild(sprite);
+  return sprite;
+}
+
+// The Text class
+class Text extends DisplayObject {
+  constructor(
+    content = "Hello!",
+    font = "12px sans-serif",
+    fillStyle = "red",
+    x = 0,
+    y = 0
+  ) {
+    // call the DisplayObject's constructor
+    super();
+
+    // Assign the arguments values to this sprite
+    Object.assign(this, { content, font, fillStyle, x, y });
+
+    // set the default text baseline to "top"
+    this.textBaseline = "top";
+
+    // set `strokeText` to none
+    this.strokeText = "none";
+  }
+
+  // the render method describes how to draw the sprite
+  render(ctx) {
+    ctx.font = this.font;
+    ctx.strokeStyle = this.strokeStyle;
+    ctx.lineWidth = this.lineWidth;
+    ctx.fillStyle = this.fillStyle;
+
+    // measure the width and height of the text
+    if (this.width === 0) this.width = ctx.measureText(this.content).width;
+    if (this.height === 0) this.height = ctx.measureText("M").width;
+
+    ctx.translate(-this.width * this.pivotX, -this.height * this.pivotY);
+    ctx.textBaseline = this.textBaseline;
+    ctx.fillText(this.content, 0, 0);
+    if (this.strokeText !== "none") ctx.strokeText();
+  }
+}
+
+// A higher level wrapper for the Text class
+function text(content, font, fillStyle, x, y) {
+  let sprite = new Text(content, font, fillStyle, x, y);
+  stage.addChild(sprite);
   return sprite;
 }
 
@@ -604,6 +765,24 @@ function setup() {
 
   let tiger = new Sprite(assets["../images/tiger.png"], 0, 0);
   stage.addChild(tiger);
+
+  // use the circle function
+  // (diameter, fillStyle, strokeStlye, lineWidth, Xpos, Ypos)
+  let cyanCircle = circle(64, "cyan", "red", 2, 64, 248);
+  console.log("cyanCircle:", cyanCircle);
+
+  // use the line function
+  // (strokeStyle, lineWidth, ax, ay, bx, by)
+  let blackLine = line("black", 4, 64, 248, 128, 312);
+  let greenLine = line("green", 4, 64, 280, 128, 280);
+  let redLine = line("red", 4, 64, 312, 128, 248);
+  let blueLine = line("blue", 4, 96, 248, 96, 312);
+  console.log("blackLine:", blackLine);
+
+  // use the text function:
+  let message = text("Hey Dude!", "24px Futura", "black", 156, 230);
+
+  message.content = "Grumble bugs!";
 
   console.log("cat:", cat);
   render(canvas);
