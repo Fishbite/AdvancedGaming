@@ -769,70 +769,60 @@ function render(canvas) {
 
 class Sprite extends DisplayObject {
   constructor(source, x = 0, y = 0) {
-    // call the displayObject's super
+    //Call the DisplayObject's constructor
     super();
 
-    // assign the argument values to this sprite
+    //Assign the argument values to this sprite
     Object.assign(this, { x, y });
 
-    /* ********* What is the source? ********* */
-    // figure out what the source is, then use that
-    // source data to display the sprite correctly
-
-    // is the source a JS image object?
+    //We need to figure out what the source is, and then use
+    //use that source data to display the sprite image correctly
+    //Is the source a JavaScript Image object?
     if (source instanceof Image) {
       this.createFromImage(source);
     }
-
-    // If the source has a `frame` property the
-    // source is a tileset from a texture atlas
+    //Is the source a tileset from a texture atlas?
+    //(It is if it has a `frame` property)
     else if (source.frame) {
       this.createFromAtlas(source);
     }
-
-    // If the source contains an `image` subproperty, this must
-    // be a `frame` object that's defining the rectangular area
-    // of an inner subimage.
-    // Use that subimage to make the sprite. If it doesn't contain a
-    //`data` property, then it must be a single frame
+    //If the source contains an `image` sub-property, this must
+    //be a `frame` object that's defining the rectangular area of an inner sub-image
+    //Use that sub-image to make the sprite. If it doesn't contain a
+    //`data` property, then it must be a single frame.
     else if (source.image && !source.data) {
       this.createFromTileset(source);
     }
-
-    // If the source contains an `image` subproperty and
-    // a `data` property, it contains multiple frames
-    else if (source.image & source.data) {
+    //If the source contains an `image` sub-property
+    //and a `data` property, then it contains multiple frames
+    else if (source.image && source.data) {
       this.createFromTilesetFrames(source);
     }
-
-    // Is the source an array? If so, what kind of array?
+    //Is the source an array? If so, what kind of array?
     else if (source instanceof Array) {
       if (source[0] && source[0].source) {
-        // the source is an array of frames on a texture
-        // atlas tileset
+        //The source is an array of frames on a texture atlas tileset
         this.createFromAtlasFrames(source);
       }
-
-      // it must be an array of image objects
+      //It must be an array of image objects
       else if (source[0] instanceof Image) {
         this.createFromImages(source);
       }
-
-      // throw an error if the sources in the array
-      // aren't reckognised
+      //throw an error if the sources in the array aren't recognized
       else {
-        throw new Error(`The image sources in ${source} are not reckognised`);
+        throw new Error(`The image sources in ${source} are not recognized`);
       }
     }
+    //Throw an error if the source is something we can't interpret
+    else {
+      throw new Error(`The image source ${source} is not recognized`);
+    }
   }
-
   createFromImage(source) {
-    // throw an error if the source is not an Image object
+    //Throw an error if the source is not an Image object
     if (!(source instanceof Image)) {
       throw new Error(`${source} is not an image object`);
-    }
-    // otherwise, create the sprite using an image
-    else {
+    } else {
       this.source = source;
       this.sourceX = 0;
       this.sourceY = 0;
@@ -842,7 +832,6 @@ class Sprite extends DisplayObject {
       this.sourceHeight = source.height;
     }
   }
-
   createFromAtlas(source) {
     this.tilesetFrame = source;
     this.source = this.tilesetFrame.source;
@@ -853,8 +842,8 @@ class Sprite extends DisplayObject {
     this.sourceWidth = this.tilesetFrame.frame.w;
     this.sourceHeight = this.tilesetFrame.frame.h;
   }
-
   createFromTileset(source) {
+    //Throw an error if the source is not an image object
     if (!(source.image instanceof Image)) {
       throw new Error(`${source.image} is not an image object`);
     } else {
@@ -867,15 +856,14 @@ class Sprite extends DisplayObject {
       this.sourceHeight = source.height;
     }
   }
-
   createFromTilesetFrames(source) {
+    //Throw an error if the source is not an Image object
     if (!(source.image instanceof Image)) {
-      throw new Error(`${source.image} is not an Image object`);
+      throw new Error(`${source.image} is not an image object`);
     } else {
       this.source = source.image;
       this.frames = source.data;
-
-      // set the sprite to the first frame
+      //Set the sprite to the first frame
       this.sourceX = this.frames[0][0];
       this.sourceY = this.frames[0][1];
       this.width = source.width;
@@ -884,8 +872,7 @@ class Sprite extends DisplayObject {
       this.sourceHeight = source.height;
     }
   }
-
-  creatFromAtlasFrames(source) {
+  createFromAtlasFrames(source) {
     this.frames = source;
     this.source = source[0].source;
     this.sourceX = source[0].frame.x;
@@ -895,22 +882,21 @@ class Sprite extends DisplayObject {
     this.sourceWidth = source[0].frame.w;
     this.sourceHeight = source[0].frame.h;
   }
-
   createFromImages(source) {
     this.frames = source;
     this.source = source[0];
     this.sourceX = 0;
     this.sourceY = 0;
     this.width = source[0].width;
-    this.height = source[0].height;
-    this.sourceWidth = soure[0].width;
+    this.height = source[0].width;
+    this.sourceWidth = source[0].width;
     this.sourceHeight = source[0].height;
   }
 
-  // Add a `gotoAndStop` method to go to a specif frame
+  //Add a `gotoAndStop` method to go to a specific frame.
   gotoAndStop(frameNumber) {
     if (this.frames.length > 0 && frameNumber < this.frames.length) {
-      //a. Frames made from tileset subimages.
+      //a. Frames made from tileset sub-images.
       //If each frame is an array, then the frames were made from an
       //ordinary Image object using the `frames` method
       if (this.frames[0] instanceof Array) {
@@ -919,9 +905,9 @@ class Sprite extends DisplayObject {
       }
 
       //b. Frames made from texture atlas frames.
-      //If each frame isn't an array, and it has a subobject called `frame`,
-      //then the frame must be a texture atlas ID name.
-      //In that case, get the source position from the atlas's `frame` object
+      //If each frame isn't an array, and it has a sub-object called `frame`,
+      //then the frame must be a texture atlas id name.
+      //In that case, get the source position from the atlas's `frame` object.
       else if (this.frames[frameNumber].frame) {
         this.sourceX = this.frames[frameNumber].frame.x;
         this.sourceY = this.frames[frameNumber].frame.y;
@@ -931,8 +917,8 @@ class Sprite extends DisplayObject {
         this.height = this.frames[frameNumber].frame.h;
       }
 
-      //c. Frames made from individual Image objects.
-      //If neither of the above is true, then each frame must be
+      //c. Frames made from individual image objects.
+      //If neither of the above are true, then each frame must be
       //an individual Image object
       else {
         this.source = this.frames[frameNumber];
@@ -943,18 +929,16 @@ class Sprite extends DisplayObject {
         this.sourceWidth = this.source.width;
         this.sourceHeight = this.source.height;
       }
-
-      // set the `_currentFrame` value to the chosen frame
+      //Set the `_currentFrame` value to the chosen frame
       this._currentFrame = frameNumber;
     }
-
-    // Throw an error if this sprite doesn't contain any frames
+    //Throw an error if this sprite doesn't contain any frames
     else {
       throw new Error(`Frame number ${frameNumber} does not exist`);
     }
   }
 
-  // the render method
+  //The `render` method explains how to draw the sprite
   render(ctx) {
     ctx.drawImage(
       this.source,
@@ -1059,11 +1043,10 @@ function setup() {
 
   // Blitting a subimage from a tileset with no json file
   // using the `frame` function created to do this
-
   /* ****** Problem `image` is 'undefined' ****** */
-  /*
+
   let fairyFrame = frame(
-    assets["images/fairy.png"], //the tileset source image
+    assets["../images/fairy.png"], //the tileset source image
     0, //The subimage's x
     0, //The subimage's y
     48, //The subimage's width
@@ -1073,10 +1056,11 @@ function setup() {
 
   // then initialise the sprite using the returned fairyFrame object
   let fairy = sprite(fairyFrame, 0, 128); // have error!
-  */
+
   /* ****** End Problem ****** */
 
   /* ****** Same Problem ****** */
+
   // Blitting multiple tileset frames
   function frames(source, arrayOfPositions, width, height) {
     var o = {};
@@ -1098,7 +1082,7 @@ function setup() {
   );
   console.log("fairyFrames:", fairyFrames);
 
-  let fairy = sprite(fairyFrames, 156, 0);
+  let fairy2 = sprite(fairyFrames, 156, 0);
 
   render(canvas);
 }
