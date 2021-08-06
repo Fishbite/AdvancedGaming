@@ -1,6 +1,6 @@
 import { makeCanvas } from "../lib/makeCanvas.js";
 
-let canvas = makeCanvas(312, 312);
+let canvas = makeCanvas(512, 512);
 
 // The base class that contains props & methods
 // shared by all the different sprite types
@@ -987,6 +987,7 @@ assets
     "../images/tiger.png",
     "../images/animals.json",
     "../images/fairy.png",
+    "../images/button.json",
   ])
   .then(() => setup());
 
@@ -1082,7 +1083,15 @@ function setup() {
   );
   console.log("fairyFrames:", fairyFrames);
 
-  let fairy2 = sprite(fairyFrames, 156, 0);
+  let fairy2 = sprite(fairyFrames, 72, 128);
+  fairy2.gotoAndStop(2);
+
+  let buttonFrames = [assets["up.png"], assets["over.png"], assets["down.png"]];
+  console.log("buttonFrames:", buttonFrames);
+
+  // create a sprite and supply the buttonFrames
+  // array as the source:
+  let button = sprite(buttonFrames, 300, 280);
 
   render(canvas);
 }

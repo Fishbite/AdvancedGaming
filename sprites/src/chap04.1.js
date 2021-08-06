@@ -572,7 +572,7 @@ class Line extends DisplayObject {
 }
 
 // A higher level wrapper for the line sprite
-function line(strokeStyle, lineWidth, ax, ay, bx, by) {
+export function line(strokeStyle, lineWidth, ax, ay, bx, by) {
   let sprite = new Line(strokeStyle, lineWidth, ax, ay, bx, by);
   stage.addChild(sprite);
   return sprite;
@@ -619,7 +619,7 @@ class Text extends DisplayObject {
 }
 
 // A higher level wrapper for the Text class
-function text(content, font, fillStyle, x, y) {
+export function text(content, font, fillStyle, x, y) {
   let sprite = new Text(content, font, fillStyle, x, y);
   stage.addChild(sprite);
   return sprite;
@@ -697,7 +697,7 @@ class Group extends DisplayObject {
 }
 
 // A higher level wrapper for the Group sprite
-function group(...spritesToGroup) {
+export function group(...spritesToGroup) {
   let sprite = new Group(...spritesToGroup);
   stage.addChild(sprite);
   return sprite;
@@ -888,7 +888,7 @@ class Sprite extends DisplayObject {
     }
   }
 
-  creatFromAtlasFrames(source) {
+  createFromAtlasFrames(source) {
     this.frames = source;
     this.source = source[0].source;
     this.sourceX = source[0].frame.x;
@@ -905,8 +905,8 @@ class Sprite extends DisplayObject {
     this.sourceX = 0;
     this.sourceY = 0;
     this.width = source[0].width;
-    this.height = source[0].height; // Not Height???
-    this.sourceWidth = soure[0].width;
+    this.height = source[0].height; // Not Height??? Yes!!!
+    this.sourceWidth = source[0].width;
     this.sourceHeight = source[0].height;
   }
 
@@ -974,14 +974,14 @@ class Sprite extends DisplayObject {
 }
 
 // a higher level wrapper
-function sprite(source, x, y) {
+export function sprite(source, x, y) {
   let sprite = new Sprite(source, x, y);
   stage.addChild(sprite);
   return sprite;
 }
 
 // A function to help capture individual tileset frames
-function frame(source, x, y, width, height) {
+export function frame(source, x, y, width, height) {
   var o = {};
   o.image = source;
   o.x = x;
@@ -992,7 +992,7 @@ function frame(source, x, y, width, height) {
 }
 // function to load multiple images into a sprite with tileset images, it
 // lets us specify an array of x / y positions of sub-images we want to use
-function frames(source, arrayOfPositions, width, height) {
+export function frames(source, arrayOfPositions, width, height) {
   var o = {};
   o.image = source;
   o.data = arrayOfPositions;
@@ -1014,6 +1014,7 @@ assets
   .load([
     "../images/cat.png",
     "../images/tiger.png",
+    "../images/hedgehog.png",
     "../images/animals.json",
     "../images/fairy.png",
     "../images/button.json",
@@ -1105,6 +1106,29 @@ function setup() {
   // we can now use goToAndStop to choose which image to display
   // show the third image for example:
   fairy2.gotoAndStop(2);
+
+  // ***** Using Multiple Texture Atlas Frames *****
+  // make a clickable button where the button frame
+  // ID names are up.png, over.png and down.png
+  // First Create an array that references the
+  // three frame ID names
+  let buttonFrames = [assets["up.png"], assets["over.png"], assets["down.png"]];
+  console.log("buttonFrames:", buttonFrames);
+
+  // create a sprite and supply the buttonFrames
+  // array as the source:
+  let button = sprite(buttonFrames, 300, 280);
+  button.gotoAndStop(2);
+
+  /* ****** Use Multiple Image files ****** */
+  let animalImages = [
+    assets["../images/cat.png"],
+    assets["../images/hedgehog.png"],
+    assets["../images/tiger.png"],
+  ];
+
+  let animals = sprite(animalImages, 320, 384);
+  animals.gotoAndStop(2);
 
   render(canvas);
 }
