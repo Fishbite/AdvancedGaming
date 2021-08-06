@@ -408,10 +408,30 @@ class SpriteType extends DisplayObject {
   }
 }
 
+// a module to create a canvas
+export function makeCanvas(
+  width = 256,
+  height = 256,
+  border = "1px solid black",
+  backgroundColor = "white"
+) {
+  // make the canvas element and add it to the DOM
+  let canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  canvas.style.border = border;
+  canvas.style.backgroundColor = backgroundColor;
+  document.body.appendChild(canvas);
+  canvas.ctx = canvas.getContext("2d");
+
+  // return the canvas
+  return canvas;
+}
+
 /* ****** The Root Stage Object ****** */
 export let stage = new DisplayObject();
-stage.width = canvas.width;
-stage.height = canvas.height;
+// stage.width = canvas.width;
+// stage.height = canvas.height;
 
 // The `Rectangle` class
 class Rectangle extends DisplayObject {
@@ -718,7 +738,7 @@ export function group(...spritesToGroup) {
 }
 
 /* ******Full Featured Render Function ****** */
-function render(canvas) {
+export function render(canvas) {
   //Get a reference to the context
   let ctx = canvas.ctx;
   //Clear the canvas
