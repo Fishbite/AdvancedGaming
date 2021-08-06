@@ -1,6 +1,6 @@
 import { makeCanvas } from "../lib/makeCanvas.js";
 
-let canvas = makeCanvas(312, 312);
+let canvas = makeCanvas(512, 512);
 
 // The base class that contains props & methods
 // shared by all the different sprite types
@@ -783,7 +783,6 @@ class Sprite extends DisplayObject {
     if (source instanceof Image) {
       this.createFromImage(source);
     }
-
     // If the source has a `frame` property the
     // source is a tileset from a texture atlas
     else if (source.frame) {
@@ -801,7 +800,7 @@ class Sprite extends DisplayObject {
 
     // If the source contains an `image` subproperty and
     // a `data` property, it contains multiple frames
-    else if (source.image & source.data) {
+    else if (source.image && source.data) {
       this.createFromTilesetFrames(source);
     }
 
@@ -823,6 +822,10 @@ class Sprite extends DisplayObject {
       else {
         throw new Error(`The image sources in ${source} are not reckognised`);
       }
+    }
+    //Throw an error if the source is something we can't interpret
+    else {
+      throw new Error(`The image source ${source} is not recognized`);
     }
   }
 
@@ -902,7 +905,7 @@ class Sprite extends DisplayObject {
     this.sourceX = 0;
     this.sourceY = 0;
     this.width = source[0].width;
-    this.height = source[0].height;
+    this.height = source[0].height; // Not Height???
     this.sourceWidth = soure[0].width;
     this.sourceHeight = source[0].height;
   }
@@ -987,6 +990,16 @@ function frame(source, x, y, width, height) {
   o.height = height;
   return o;
 }
+// function to load multiple images into a sprite with tileset images, it
+// lets us specify an array of x / y positions of sub-images we want to use
+function frames(source, arrayOfPositions, width, height) {
+  var o = {};
+  o.image = source;
+  o.data = arrayOfPositions;
+  o.width = width;
+  o.height = height;
+  return o;
+}
 
 /* ****** Testing by Drawing ****** */
 
@@ -1003,6 +1016,7 @@ assets
     "../images/tiger.png",
     "../images/animals.json",
     "../images/fairy.png",
+    "../images/button.json",
   ])
   .then(() => setup());
 
@@ -1056,14 +1070,11 @@ function setup() {
   let tiger2 = sprite(assets["tiger.png"], 184, 0);
 
   console.log("tiger2:", tiger2);
-
+  /* ****** Blitting Images ****** */
   // Blitting a subimage from a tileset with no json file
   // using the `frame` function created to do this
-
-  /* ****** Problem `image` is 'undefined' ****** */
-  /*
   let fairyFrame = frame(
-    assets["images/fairy.png"], //the tileset source image
+    assets["../images/fairy.png"], //the tileset source image
     0, //The subimage's x
     0, //The subimage's y
     48, //The subimage's width
@@ -1073,32 +1084,27 @@ function setup() {
 
   // then initialise the sprite using the returned fairyFrame object
   let fairy = sprite(fairyFrame, 0, 128); // have error!
-  */
-  /* ****** End Problem ****** */
 
-  /* ****** Same Problem ****** */
   // Blitting multiple tileset frames
-  function frames(source, arrayOfPositions, width, height) {
-    var o = {};
-    o.image = source;
-    o.data = arrayOfPositions;
-    o.width = width;
-    o.height = height;
-    return o;
-  }
   let fairyFrames = frames(
-    assets["../images/fairy.png"],
+    assets["../images/fairy.png"], // fairy.png has four images
     [
-      [0, 0],
-      [48, 0],
-      [96, 0],
+      [0, 0], // first image in tileset
+      [48, 0], // second image in tileset
+      [96, 0], // third image in tileset
     ],
     48,
     32
   );
   console.log("fairyFrames:", fairyFrames);
 
-  let fairy = sprite(fairyFrames, 156, 0);
+  let fairy2 = sprite(fairyFrames, 72, 128);
+  // the fairy2 sprite now has three image frames stored in an internal
+  // array property called frames.
+
+  // we can now use goToAndStop to choose which image to display
+  // show the third image for example:
+  fairy2.gotoAndStop(2);
 
   render(canvas);
 }
