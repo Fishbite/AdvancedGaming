@@ -29,6 +29,9 @@ assets
     "../images/fairy.png",
     "../images/hedgehog.png",
     "../images/tiger.png",
+    "../fonts/Moonhouse-yE5M.ttf",
+    "../fonts/PetMe64.ttf",
+    "../fonts/puzzler.otf",
   ])
   .then(() => setup());
 
@@ -215,8 +218,8 @@ function setup() {
   transparentCircle.setPosition(384, 256);
 
   // ****** Text ****** \\
-  let message = text("Oh! Grumble Bugs!", "24px Papyrus", "black", 128, 384);
-  message.content = "Arsen Housen!";
+  let message = text("Oh! Grumble Bugs!", "24px puzzler", "black", 16, 384);
+  message.content = `Jibberdy! :-P`;
 
   // ****************** Images ****************** \\
   // From an image object

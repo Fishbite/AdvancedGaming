@@ -128,6 +128,7 @@ export let assets = {
   loadFont(source, loadHandler) {
     //Use the font's filename as the `fontfamily` name
     let fontfamily = source.split("/").pop().split(".")[0];
+    console.log("fontFamily:", fontfamily);
 
     // Append an `@font-face` style rule to the head
     // of the HTML document
@@ -145,6 +146,7 @@ export let assets = {
     let fontFace = `@font-face {font-family: ${fontfamily}; src: url("${source}")}`;
     newStyle.appendChild(document.createTextNode(fontFace));
     document.head.appendChild(newStyle);
+    console.log("fontFace:", fontFace);
 
     // tell the loadHandler we're loading a font
     loadHandler();
