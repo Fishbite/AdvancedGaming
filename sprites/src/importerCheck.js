@@ -32,6 +32,8 @@ assets
     "../fonts/Moonhouse-yE5M.ttf",
     "../fonts/PetMe64.ttf",
     "../fonts/puzzler.otf",
+    "../fonts/SoothingPersonal-jEaM9.ttf",
+    "../fonts/SoothingPersonal-GOnjO.otf",
   ])
   .then(() => setup());
 
@@ -218,8 +220,14 @@ function setup() {
   transparentCircle.setPosition(384, 256);
 
   // ****** Text ****** \\
-  let message = text("Oh! Grumble Bugs!", "24px puzzler", "black", 16, 384);
-  message.content = `Jibberdy! :-P`;
+  let message = text(
+    "Oh! Grumble Bugs!",
+    "24px SoothingPersonal-GOnjO",
+    "black",
+    96,
+    384
+  );
+  message.content = `Jibberdy`;
 
   // ****************** Images ****************** \\
   // From an image object
@@ -280,9 +288,10 @@ function setup() {
     goldBox.rotation -= deg(0.2);
     pinkBox.rotation += deg(0.3);
     transparentCircle.rotation -= deg(0.1);
+    message.rotation += deg(0.3);
     render(canvas);
   }
 
   // render the sprites on canvas
-  render(canvas);
+  // render(canvas);
 }
