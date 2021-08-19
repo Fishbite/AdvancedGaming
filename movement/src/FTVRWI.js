@@ -1,19 +1,7 @@
-// file for testing stuufff
-
-/* ****** A Random Integer Function ******
-function randInt(min, max) {
-  //   min = Math.ceil(min);
-  //   max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)); // inc min excl max
-}
-
-for (i = 0; i < 10; i++) {
-  let n = randInt(0, 15);
-  if (n == 0 || n == 14 || n > 14) console.log("Yeah!", n);
-  //   console.log(n);
-}
-
-****** End OF ****** */
+/*
+    Fixed Timestep, Variable Rendering With Interpolation Game Loop
+          Testing With Our Bouncing Ball With Physics
+*/
 
 import {
   stage,
@@ -57,8 +45,8 @@ function gameLoop(timestamp) {
 
   let lagOffset = lag / frameDuration;
 
-  renderWithInterpolation(canvas, lagOffset);
-  // render(canvas);
+  renderWithInterpolation(canvas, lagOffset); // disable to enable render(canvas);
+  // render(canvas); // enable this to run without interpolation
 
   previous = timestamp;
 }

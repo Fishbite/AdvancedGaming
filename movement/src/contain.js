@@ -35,11 +35,14 @@ export function contain(sprite, bounds, bounce = false, callback = undefined) {
     if (bounce) sprite.vx *= -1;
 
     // if the sprite has mass, let it affect
-    // the sprite's velocity
+    // (dampen) the sprite's velocity
     if (sprite.mass) sprite.vx /= sprite.mass;
 
     // bring the sprite back onto the canvas
     sprite.x = x;
+    // this stops the sprite sticking to the edges
+    // and doing odd stuff like sinking through
+    // the bottom of the canvas!
 
     // store the side of the containment area that the sprite hit
     collision = "left";
@@ -49,7 +52,7 @@ export function contain(sprite, bounds, bounce = false, callback = undefined) {
   if (sprite.x + sprite.width > width) {
     if (bounce) sprite.vx *= -1;
     if (sprite.mass) sprite.vx /= sprite.mass;
-    sprite.x = width - sprite.width;
+    sprite.x = width - sprite.width; // bring it back
     let collision = "right";
   }
 
@@ -57,7 +60,7 @@ export function contain(sprite, bounds, bounce = false, callback = undefined) {
   if (sprite.y < y) {
     if (bounce) sprite.vy *= -1;
     if (sprite.mass) sprite.vy /= sprite.mass;
-    sprite.y = y;
+    sprite.y = y; // bring it back
     let collision = "top";
   }
 
@@ -65,7 +68,7 @@ export function contain(sprite, bounds, bounce = false, callback = undefined) {
   if (sprite.y + sprite.height > height) {
     if (bounce) sprite.vy *= -1;
     if (sprite.mass) sprite.vy /= sprite.mass;
-    sprite.y = height - sprite.height;
+    sprite.y = height - sprite.height; // bring it back
     collision = "bottom";
   }
   // run the callbackFunc if there was a collision and

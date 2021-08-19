@@ -38,7 +38,7 @@ let fps = 30, // frames per second
   lag = 0;
 
 function gameLoop(timestamp) {
-  requestAnimationFrame(timestamp);
+  requestAnimationFrame(gameLoop);
 
   // calculate the elapsed time since the last frame
   if (!timestamp) timestamp = 0;
@@ -78,8 +78,8 @@ function gameLoop(timestamp) {
 
 function update() {
   // capture the ball's previous position
-  ball.previousX = sprite.x;
-  ball.previousY = sprite.y;
+  ball.previousX = ball.x;
+  ball.previousY = ball.y;
 
   // move the ball and bounce it off the stage edges
   ball.vy += ball.gravity;

@@ -806,7 +806,7 @@ export function render(canvas) {
 
 // renderWithInterpolation(canvasContext, lagOffset);
 
-export function renderWithInterpolation(canvas) {
+export function renderWithInterpolation(canvas, lagOffset) {
   //Get a reference to the context
   let ctx = canvas.ctx;
   //Clear the canvas
@@ -829,6 +829,8 @@ export function renderWithInterpolation(canvas) {
       //Save the canvas's present state
       ctx.save();
 
+      // code difference from the normal render function
+      // this calculates the sprites' rendered positions.
       // Interpolation:
       if (sprite.previousX !== undefined) {
         sprite.renderX =
@@ -836,7 +838,7 @@ export function renderWithInterpolation(canvas) {
       } else {
         sprite.renderX = sprite.x;
       }
-      if (sprite.previousY !== undfined) {
+      if (sprite.previousY !== undefined) {
         sprite.renderY =
           (sprite.y - sprite.previousY) * lagOffset + sprite.previousY;
       } else {
@@ -844,7 +846,7 @@ export function renderWithInterpolation(canvas) {
       }
 
       // draw the sprite at its interpolated position
-      ctxx.translate(
+      ctx.translate(
         sprite.renderX + sprite.width * sprite.pivotX,
         sprite.renderY + sprite.height * sprite.pivotY
       );
@@ -890,6 +892,7 @@ export function renderWithInterpolation(canvas) {
     }
   }
 }
+
 /* ****** END Render with Interpolation Function ****** */
 
 class Sprite extends DisplayObject {
