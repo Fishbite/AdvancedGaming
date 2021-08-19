@@ -801,6 +801,97 @@ export function render(canvas) {
 }
 /* ****** END Full Featured Render Function ****** */
 
+/* ****** Render with Interpolation Function ****** */
+// for use inside a fixed timestep game loop. use like:
+
+// renderWithInterpolation(canvasContext, lagOffset);
+
+export function renderWithInterpolation(canvas) {
+  //Get a reference to the context
+  let ctx = canvas.ctx;
+  //Clear the canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //Loop through each sprite object in the stage's `children` array
+  stage.children.forEach((sprite) => {
+    //Display a sprite
+    displaySprite(sprite);
+  });
+  function displaySprite(sprite) {
+    //Only display the sprite if it's visible
+    //and within the area of the canvas
+    if (
+      sprite.visible &&
+      sprite.gx < canvas.width + sprite.width &&
+      sprite.gx + sprite.width >= -sprite.width &&
+      sprite.gy < canvas.height + sprite.height &&
+      sprite.gy + sprite.height >= -sprite.height
+    ) {
+      //Save the canvas's present state
+      ctx.save();
+
+      // Interpolation:
+      if (sprite.previousX !== undefined) {
+        sprite.renderX =
+          (sprite.x - sprite.previousX) * lagOffset + sprite.previousX;
+      } else {
+        sprite.renderX = sprite.x;
+      }
+      if (sprite.previousY !== undfined) {
+        sprite.renderY =
+          (sprite.y - sprite.previousY) * lagOffset + sprite.previousY;
+      } else {
+        sprite.renderY = sprite.y;
+      }
+
+      // draw the sprite at its interpolated position
+      ctxx.translate(
+        sprite.renderX + sprite.width * sprite.pivotX,
+        sprite.renderY + sprite.height * sprite.pivotY
+      );
+
+      /*
+      //Shift the canvas to the center of the sprite's position
+      ctx.translate(
+        sprite.x + sprite.width * sprite.pivotX,
+        sprite.y + sprite.height * sprite.pivotY
+      );
+      */
+
+      //Set the sprite's `rotation`, `alpha` and `scale`
+      ctx.rotate(sprite.rotation);
+      ctx.globalAlpha = sprite.alpha * sprite.parent.alpha;
+      ctx.scale(sprite.scaleX, sprite.scaleY);
+      //Display the sprite's optional drop shadow
+      if (sprite.shadow) {
+        ctx.shadowColor = sprite.shadowColor;
+        ctx.shadowOffsetX = sprite.shadowOffsetX;
+        ctx.shadowOffsetY = sprite.shadowOffsetY;
+        ctx.shadowBlur = sprite.shadowBlur;
+      }
+      //Display the optional blend mode
+      if (sprite.blendMode) ctx.globalCompositeOperation = sprite.blendMode;
+      //Use the sprite's own `render` method to draw the sprite
+      if (sprite.render) sprite.render(ctx);
+      if (sprite.children && sprite.children.length > 0) {
+        //Reset the context back to the parent sprite's top-left corner,
+        //relative to the pivot point
+        ctx.translate(
+          -sprite.width * sprite.pivotX,
+          -sprite.height * sprite.pivotY
+        );
+        //Loop through the parent sprite's children
+        sprite.children.forEach((child) => {
+          //display the child
+          displaySprite(child);
+        });
+      }
+      //Restore the canvas to its previous state
+      ctx.restore();
+    }
+  }
+}
+/* ****** END Render with Interpolation Function ****** */
+
 class Sprite extends DisplayObject {
   constructor(source, x = 0, y = 0) {
     // call the displayObject's super
