@@ -19,7 +19,7 @@ let randInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-/* ****** Fixed TimeStep Variable Rendering with Interpolation ****** */
+/* ****** Fixed TimeStep, Variable Rendering with Interpolation ****** */
 
 let fps = 15, // frames per second
   previous = 0, // store for the previous timestamp
