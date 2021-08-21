@@ -14,7 +14,7 @@ for (i = 0; i < 10; i++) {
 }
 
 ****** End OF ****** */
-
+/*
 import {
   stage,
   makeCanvas,
@@ -25,14 +25,14 @@ import {
 } from "../lib/importer.js";
 
 import { contain } from "./contain.js";
-
+*/
 // get a random number inclusive of and between min and max
 let randInt = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
 /* ****** Fixed TimeStep Variable Rendering with Interpolation ****** */
-
+/*
 let fps = 15, // frames per second
   previous = 0, // store for the previous timestamp
   frameDuration = 1000 / fps,
@@ -105,3 +105,37 @@ function update() {
   }
 }
 gameLoop();
+*/
+
+import { space, left, up, right, down } from "./keyboard.js";
+import { makeCanvas, stage, text, render } from "../lib/importer.js";
+import { assets } from "../lib/assets.js";
+
+assets.load(["../fonts/puzzler.otf"]).then(() => setup());
+
+let canvas;
+
+function setup() {
+  canvas = makeCanvas(256, 256);
+  stage.width = canvas.width;
+  stage.height = canvas.height;
+
+  let message = text("Press a Key", "16px puzzler", "black", 16, 128);
+
+  space.press = () => (message.content = "Arse!");
+  space.release = () => {
+    message.content = "Hole!";
+  };
+
+  up.press = () => (message.y -= 1);
+  left.press = () => (message.x -= 1);
+  right.press = () => (message.x += 1);
+  down.press = () => (message.y += 1);
+
+  gameLoop();
+}
+
+function gameLoop() {
+  requestAnimationFrame(gameLoop);
+  render(canvas);
+}
