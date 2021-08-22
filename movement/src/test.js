@@ -107,6 +107,8 @@ function update() {
 gameLoop();
 */
 
+/* ******  Keyboard Object Testing ****** \\
+
 import { space, left, up, right, down } from "./keyboard.js";
 import { makeCanvas, stage, text, render } from "../lib/importer.js";
 import { assets } from "../lib/assets.js";
@@ -139,3 +141,43 @@ function gameLoop() {
   requestAnimationFrame(gameLoop);
   render(canvas);
 }
+
+****** Keyboard End Testing ****** */
+
+// /* ****** Pointer Testing ***** */
+
+// import { stage, render, makeCanvas } from "../lib/importer.js";
+// import { makePointer } from "./pointer.js";
+// import { assets } from "../lib/assets.js";
+
+// let output = document.getElementById("output");
+
+// // make the pointer and assign it to the canvas
+// let pointer = makePointer(canvas);
+
+// // add a custom press method
+// pointer.press = () => console.log("pointer pressed");
+
+// // and a release method
+// pointer.release = () => console.log("pointer released");
+
+// // a tap method
+// pointer.tap = () => console.log("pointer tapped");
+
+// // call the game loop
+// gameLoop();
+
+// function gameLoop() {
+//   requestAnimationFrame(gameLoop);
+
+//   // display the pointers properties in the <p> tag
+//   output.innerHTML = `Pointer Properties:
+//   pointer.x: ${pointer.x}
+//   pointer.y: ${pointer.y}
+//   pointer.isDown: ${pointer.isDown}
+//   pointer.isUp: ${pointer.isUp}
+//   pointer.tapped: ${pointer.tapped}
+//   `;
+
+//   render(canvas);
+// }
