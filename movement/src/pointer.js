@@ -48,7 +48,7 @@ export function makePointer(element, scale = 1) {
     get centerX() {
       return this.x;
     },
-    get canterY() {
+    get centerY() {
       return this.y;
     },
 
