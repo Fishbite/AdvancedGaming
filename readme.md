@@ -38,6 +38,7 @@ OK! We finished with the canvas folder as we are getting into working with sprit
 See the sprites folder....
 
 Latest update is in the movements folder....
+See followWithEasing.html
 
 
 Stay tuned :-)
