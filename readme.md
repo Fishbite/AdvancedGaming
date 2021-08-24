@@ -1,8 +1,7 @@
 # Advanced Gaming
 
 This repository has been created
-whilst reading the first chapter
-of Advanced Game Design by
+whilst reading the Advanced Game Design by
 **Rex van der Spuy**
 published by **Apress**
 
@@ -35,6 +34,11 @@ Take a look in the canvas folder and....
 
 OK! We finished with the canvas folder as we are getting into working with sprites. In hindsight, we should have moved out a little while ago, probably before we made the assets object / module which is responsible for pre-loading all the game assets before initialising the game itself.
 
+
 See the sprites folder....
+
+Latest update is in the movements folder....
+See followWithEasing.html
+
 
 Stay tuned :-)
