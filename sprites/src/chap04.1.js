@@ -1012,16 +1012,17 @@ export function frames(source, arrayOfPositions, width, height) {
 import { assets } from "../lib/assets.js";
 assets
   .load([
-    "../images/cat.png",
-    "../images/tiger.png",
-    "../images/hedgehog.png",
-    "../images/animals.json",
-    "../images/fairy.png",
-    "../images/button.json",
+    "./images/cat.png",
+    "./images/tiger.png",
+    "./images/hedgehog.png",
+    "./images/animals.json",
+    "./images/fairy.png",
+    "./images/button.json",
   ])
   .then(() => setup());
 
 function setup() {
+  // console.log("Ok!");
   let box = rectangle(128, 128, "blue", "none", 0, 156, 156);
   box.pivotX = 0.5;
   box.pivotY = 0.5;

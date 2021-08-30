@@ -108,10 +108,10 @@ function render(canvas, ctx) {
 let blueBox = rectangle(64, 64, "blue", "none", 0, 32, 32);
 blueBox.rotation = 0.25;
 
-let redBox = rectangle(64, 64, "red", "black", 4, 160, 100);
+let redBox = rectangle(64, 64, "red", "black", 8, 160, 100);
 redBox.alpha = 0.75;
 redBox.rotation = 0.5;
-redBox.scaleY = 2;
+redBox.scaleY = 1.5;
 
 let greenBox = rectangle(64, 64, "green", "black", 4, 64, 160);
 
