@@ -15,7 +15,20 @@ import { assets } from "../lib/assets.js";
 
 assets.load(["../fonts.puzzler.otf", "../images/cat.png"]).then(() => setup());
 
-let canvas, screenWidth, screenHeight, rect1, rect2, c1, c2, c3, c4, sea, sand;
+let canvas,
+  screenWidth,
+  screenHeight,
+  rect1,
+  rect2,
+  c1,
+  c2,
+  c3,
+  c4,
+  c5,
+  c6,
+  c7,
+  sea,
+  sand;
 
 screenWidth = window.innerWidth;
 screenHeight = window.innerHeight;
@@ -67,11 +80,12 @@ function setup() {
   /* masking to create the sea waves */
   // a transparent circle to cut out a
   // bit of a rectangle
-  c2 = circle(32, "rgba(0, 0, 0, 0)");
+  let waveSize = screenWidth / 8;
+  c2 = circle(waveSize, "rgba(0, 0, 0, 0)");
   c2.mask = true; // set mask property
 
   // a rectangle to cut a bit out of
-  let rect3 = rectangle(64, 8, "lightblue");
+  let rect3 = rectangle(waveSize, 8, "lightblue");
 
   // add rectangle as a child of circle
   // the circle will mask the rectangle
@@ -80,18 +94,36 @@ function setup() {
   // position the cut-out at the bottom of rect1
   rect1.putBottom(c2, 0, -8);
 
-  c3 = circle(32, "rgba(0, 0, 0,0)");
+  c3 = circle(waveSize, "rgba(0, 0, 0,0)");
   c3.mask = true;
-  let rect4 = rectangle(64, 8, "lightblue");
+  let rect4 = rectangle(waveSize, 8, "lightblue");
   c3.addChild(rect4);
   // put cut-out to the right of the last one
   c2.putRight(c3);
 
-  c4 = circle(32, "rgba(0,0,0,0)");
+  c4 = circle(waveSize, "rgba(0,0,0,0)");
   c4.mask = true;
-  let rect5 = rectangle(64, 8, "lightblue");
+  let rect5 = rectangle(waveSize, 8, "lightblue");
   c4.addChild(rect5);
   c3.putRight(c4);
+
+  c5 = circle(waveSize, "rgba(0,0,0,0)");
+  c5.mask = true;
+  let rect6 = rectangle(waveSize, 8, "lightblue");
+  c5.addChild(rect6);
+  c4.putRight(c5);
+
+  c6 = circle(waveSize, "rgba(0,0,0,0)");
+  c6.mask = true;
+  let rect7 = rectangle(waveSize, 8, "lightblue");
+  c6.addChild(rect7);
+  c5.putRight(c6);
+
+  c7 = circle(waveSize, "rgba(0,0,0,0)");
+  c7.mask = true;
+  let rect8 = rectangle(waveSize, 8, "lightblue");
+  c7.addChild(rect8);
+  c6.putRight(c7);
   /* ***** end masking to create sea ***** */
 
   sea = line("lightblue", 8, 0, columnBottom, screenWidth, columnBottom);
@@ -114,13 +146,25 @@ function setup() {
 function aniLoop() {
   requestAnimationFrame(aniLoop);
 
-  let vx = 1;
+  let vx = 1; // velocity
+
   c2.x += vx;
   if (c2.x > stage.width) c2.x = -32;
+
   c3.x += vx;
   if (c3.x > stage.width) c3.x = -32;
+
   c4.x += vx;
   if (c4.x > stage.width) c4.x = -32;
+
+  c5.x += vx;
+  if (c5.x > stage.width) c5.x = -32;
+  c6.x += vx;
+  if (c6.x > stage.width) c6.x = -32;
+
+  c7.x += vx;
+  if (c7.x > stage.width) c7.x = -32;
+
   /* **** running waves animation ****
    ***** ------------------------- **** */
 
