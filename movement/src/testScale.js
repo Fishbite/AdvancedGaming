@@ -81,6 +81,16 @@ function setup() {
   // a transparent circle to cut out a
   // bit of a rectangle
   let waveSize = screenWidth / 8;
+
+  let waves = [];
+  for (let i = 2; i < 8; i++) {
+    // make the waves in this loop
+    waves[i] = circle(waveSize, "rgba(0, 0, 0, 0)");
+    console.log(waves[i]);
+  }
+  console.log(waves);
+
+  /* ****** wave 1 ****** */
   c2 = circle(waveSize, "rgba(0, 0, 0, 0)");
   c2.mask = true; // set mask property
 
@@ -94,6 +104,7 @@ function setup() {
   // position the cut-out at the bottom of rect1
   rect1.putBottom(c2, 0, -8);
 
+  /* ****** wave 2 ****** */
   c3 = circle(waveSize, "rgba(0, 0, 0,0)");
   c3.mask = true;
   let rect4 = rectangle(waveSize, 8, "lightblue");
