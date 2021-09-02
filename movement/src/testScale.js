@@ -21,17 +21,15 @@ let canvas,
   rect1,
   rect2,
   c1,
-  c2,
-  c3,
-  c4,
-  c5,
-  c6,
-  c7,
   sea,
-  sand;
+  sand,
+  waves = [],
+  waves2 = [];
 
 screenWidth = window.innerWidth;
 screenHeight = window.innerHeight;
+// let waves = [];
+// let waves2 = [];
 
 /*
 window.addEventListener("resize", createCanvas, false);
@@ -77,65 +75,44 @@ function setup() {
   rect2 = rectangle(columnwidth, columnHeight, "red");
   stage.putCenter(rect2, columnPos);
 
-  /* masking to create the sea waves */
+  /* ****** masking to create the sea waves ****** */
   // a transparent circle to cut out a
   // bit of a rectangle
   let waveSize = screenWidth / 8;
 
-  let waves = [];
-  for (let i = 2; i < 8; i++) {
+  // rectangles to mask
+  let rects = [];
+  // loop to do the masking
+  for (let i = 0; i < 8; i++) {
     // make the waves in this loop
     waves[i] = circle(waveSize, "rgba(0, 0, 0, 0)");
-    console.log(waves[i]);
+    waves[i].mask = true;
+    rects[i] = rectangle(waveSize, 8, "lightblue");
+    waves[i].addChild(rects[i]);
   }
-  console.log(waves);
 
-  /* ****** wave 1 ****** */
-  c2 = circle(waveSize, "rgba(0, 0, 0, 0)");
-  c2.mask = true; // set mask property
+  // position the first wave
+  rect1.putBottom(waves[0], 0, -8);
+  // position each wave to the right of the previous
+  for (let i = 1; i < waves.length; i++) {
+    waves[i - 1].putRight(waves[i]);
+  }
 
-  // a rectangle to cut a bit out of
-  let rect3 = rectangle(waveSize, 8, "lightblue");
+  let rects2 = [];
+  for (let i = 0; i < 8; i++) {
+    // make the waves in this loop
+    waves2[i] = circle(waveSize * 1.5, "rgba(0, 0, 0, 0)");
+    waves2[i].mask = true;
+    rects2[i] = rectangle(waveSize, 8, "lightblue");
+    waves2[i].addChild(rects2[i]);
+  }
 
-  // add rectangle as a child of circle
-  // the circle will mask the rectangle
-  c2.addChild(rect3);
-
-  // position the cut-out at the bottom of rect1
-  rect1.putBottom(c2, 0, -8);
-
-  /* ****** wave 2 ****** */
-  c3 = circle(waveSize, "rgba(0, 0, 0,0)");
-  c3.mask = true;
-  let rect4 = rectangle(waveSize, 8, "lightblue");
-  c3.addChild(rect4);
-  // put cut-out to the right of the last one
-  c2.putRight(c3);
-
-  c4 = circle(waveSize, "rgba(0,0,0,0)");
-  c4.mask = true;
-  let rect5 = rectangle(waveSize, 8, "lightblue");
-  c4.addChild(rect5);
-  c3.putRight(c4);
-
-  c5 = circle(waveSize, "rgba(0,0,0,0)");
-  c5.mask = true;
-  let rect6 = rectangle(waveSize, 8, "lightblue");
-  c5.addChild(rect6);
-  c4.putRight(c5);
-
-  c6 = circle(waveSize, "rgba(0,0,0,0)");
-  c6.mask = true;
-  let rect7 = rectangle(waveSize, 8, "lightblue");
-  c6.addChild(rect7);
-  c5.putRight(c6);
-
-  c7 = circle(waveSize, "rgba(0,0,0,0)");
-  c7.mask = true;
-  let rect8 = rectangle(waveSize, 8, "lightblue");
-  c7.addChild(rect8);
-  c6.putRight(c7);
-  /* ***** end masking to create sea ***** */
+  // position the first wave
+  rect1.putBottom(waves2[0], 0, -8);
+  // position each wave to the right of the previous
+  for (let i = 1; i < waves2.length; i++) {
+    waves2[i - 1].putRight(waves2[i]);
+  }
 
   sea = line("lightblue", 8, 0, columnBottom, screenWidth, columnBottom);
   sea.shadow = true;
@@ -148,8 +125,8 @@ function setup() {
   cMask.addChild(cat);
   */
 
-  sand = line("goldenrod", 4, 0, 0, screenWidth, 0);
-  stage.putBottom(sand, -stage.halfWidth, -2);
+  sand = line("goldenrod", 32, 0, 0, screenWidth, 0);
+  stage.putBottom(sand, -stage.halfWidth, -16);
 
   aniLoop();
 }
@@ -159,22 +136,33 @@ function aniLoop() {
 
   let vx = 1; // velocity
 
-  c2.x += vx;
-  if (c2.x > stage.width) c2.x = -32;
+  for (let wave of waves) {
+    wave.x += vx;
+    if (wave.x > stage.width) wave.x = -wave.width;
+  }
 
-  c3.x += vx;
-  if (c3.x > stage.width) c3.x = -32;
+  for (let wave of waves2) {
+    wave.x += vx / 1.25;
+    if (wave.x > stage.width) wave.x = -wave.width;
+  }
+  // console.log("!!!", waves);
 
-  c4.x += vx;
-  if (c4.x > stage.width) c4.x = -32;
+  // c2.x += vx;
+  // if (c2.x > stage.width) c2.x = -32;
 
-  c5.x += vx;
-  if (c5.x > stage.width) c5.x = -32;
-  c6.x += vx;
-  if (c6.x > stage.width) c6.x = -32;
+  // c3.x += vx;
+  // if (c3.x > stage.width) c3.x = -32;
 
-  c7.x += vx;
-  if (c7.x > stage.width) c7.x = -32;
+  // c4.x += vx;
+  // if (c4.x > stage.width) c4.x = -32;
+
+  // c5.x += vx;
+  // if (c5.x > stage.width) c5.x = -32;
+  // c6.x += vx;
+  // if (c6.x > stage.width) c6.x = -32;
+
+  // c7.x += vx;
+  // if (c7.x > stage.width) c7.x = -32;
 
   /* **** running waves animation ****
    ***** ------------------------- **** */
