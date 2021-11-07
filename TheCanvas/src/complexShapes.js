@@ -13,7 +13,7 @@ let traingle = [
 function drawPath(shape) {
   // start from the last point:
   let lastPoint = shape.length - 1;
-  //console.log("Last point", lastPoint);
+  console.log("Last point", shape[lastPoint]);
   ctx.moveTo(shape[lastPoint][0], shape[lastPoint][1]);
 
   // ue a loop to plot each point

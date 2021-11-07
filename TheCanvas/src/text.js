@@ -16,6 +16,7 @@ ctx.fillStyle = "rgba(0, 0, 150, 1)";
 
 // figure out the width height of the text
 let width = ctx.measureText(string).width;
+console.log(width);
 let height = ctx.measureText("M").width;
 
 // Set the x/y registration point

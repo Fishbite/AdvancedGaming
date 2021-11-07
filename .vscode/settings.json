@@ -1,3 +1,4 @@
 {
-    "autoimport.filesToScan": "**/*.{js,ts,tsx}"
+    "autoimport.filesToScan": "**/*.{js,ts,tsx}",
+    "liveServer.settings.port": 5501
 }
